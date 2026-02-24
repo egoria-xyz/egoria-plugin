@@ -36,10 +36,13 @@ public class HelpCommand implements CommandExecutor {
         if (player.hasPermission("egoriamc.home.use")) {
             player.sendMessage(messageManager.translateColors("&a📍 HOMES - Gestion personnelle"));
             player.sendMessage(messageManager.translateColors("&7  /home &b- Téléporter au premier home"));
+            player.sendMessage(
+                    messageManager.translateColors(
+                            "&7  /home list &b- Ouvrir l'interface de vos homes (alias: &f/home ls&b)"));
             player.sendMessage(messageManager.translateColors("&7  /home set <nom> &b- Créer un home"));
             player.sendMessage(messageManager.translateColors("&7  /home tp <nom> &b- Se téléporter à un home"));
-            player.sendMessage(messageManager.translateColors("&7  /home delete <nom> &b- Supprimer un home"));
-            player.sendMessage(messageManager.translateColors("&7  /home list &b- Afficher vos homes"));
+            player.sendMessage(messageManager
+                    .translateColors("&7  /home delete <nom> &b- Supprimer un home (alias: &f/home del&b)"));
             player.sendMessage("");
         }
 
@@ -49,13 +52,21 @@ public class HelpCommand implements CommandExecutor {
             player.sendMessage(messageManager.translateColors("&7  /warp <nom> &b- Se téléporter à un warp"));
             player.sendMessage(messageManager.translateColors("&7  /warp list &b- Afficher tous les warps"));
             player.sendMessage(messageManager.translateColors("&7  /warp info <nom> &b- Infos sur un warp"));
-
-            if (player.hasPermission("egoriamc.warp.admin")) {
-                player.sendMessage(messageManager.translateColors("&c  /warp set <nom> &b- Créer un warp (Admin)"));
-                player.sendMessage(
-                        messageManager.translateColors("&c  /warp delete <nom> &b- Supprimer un warp (Admin)"));
-            }
             player.sendMessage("");
+        }
+
+        // Section Staff
+        if (player.hasPermission("egoriamc.home.staff")) {
+            player.sendMessage(messageManager.translateColors("&d👮 STAFF - Commandes de modération"));
+            // Section Homes Staff
+            player.sendMessage(
+                    messageManager.translateColors("&7  /home staffhomes <joueur> &b- Voir les homes d'un joueur"));
+            player.sendMessage(messageManager.translateColors("&7                           &8(alias: &f/home sh&8)"));
+            player.sendMessage("");
+            // Section Warps Admin
+            player.sendMessage(messageManager.translateColors("&c  /warp set <nom> &b- Créer un warp (Admin)"));
+            player.sendMessage(
+                    messageManager.translateColors("&c  /warp delete <nom> &b- Supprimer un warp (Admin)"));
         }
 
         // Section Admin

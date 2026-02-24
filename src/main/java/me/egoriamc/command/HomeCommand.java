@@ -3,13 +3,21 @@ package me.egoriamc.command;
 import me.egoriamc.EgoriaMC;
 import me.egoriamc.manager.HomeManager;
 import me.egoriamc.manager.MessageManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Commande /home
@@ -56,8 +64,9 @@ public class HomeCommand implements CommandExecutor {
         switch (subCommand) {
             case "set" -> handleSet(player, args);
             case "delete", "del" -> handleDelete(player, args);
-            case "list", "ls" -> handleList(player);
+            case "list", "ls" -> handleGui(player);
             case "tp" -> handleTeleport(player, args);
+            case "staffhomes", "sh" -> handleStaffHomes(player, args);
             default -> sendUsage(player);
         }
 
@@ -141,6 +150,102 @@ public class HomeCommand implements CommandExecutor {
         teleportHome(player, homeName);
     }
 
+    private void handleGui(Player player) {
+        Map<String, Location> homes = homeManager.getPlayerHomes(player.getUniqueId());
+
+        if (homes.isEmpty()) {
+            player.sendMessage(messageManager.getHomeListEmpty());
+            return;
+        }
+
+        openHomesGui(player, player.getUniqueId(), player.getName());
+    }
+
+    private void handleStaffHomes(Player player, String[] args) {
+        if (!player.hasPermission("egoriamc.home.staff")) {
+            player.sendMessage(messageManager.translateColors("₾ → &7Vous n'avez pas la permission."));
+            return;
+        }
+
+        if (args.length < 2) {
+            player.sendMessage(messageManager.translateColors("₾ → &7Utilisation: /home staffhomes <joueur>"));
+            return;
+        }
+
+        String targetName = args[1];
+        Player targetPlayer = Bukkit.getPlayer(targetName);
+
+        if (targetPlayer == null) {
+            player.sendMessage(messageManager.translateColors("₾ → &7Joueur non trouvé."));
+            return;
+        }
+
+        UUID targetUuid = targetPlayer.getUniqueId();
+        Map<String, Location> homes = homeManager.getPlayerHomes(targetUuid);
+
+        if (homes.isEmpty()) {
+            player.sendMessage(messageManager.translateColors("₾ → &7Ce joueur n'a pas de homes."));
+            return;
+        }
+
+        openHomesGui(player, targetUuid, targetName);
+    }
+
+    /**
+     * Ouvre l'interface GUI des homes
+     */
+    private void openHomesGui(Player player, UUID targetUuid, String targetName) {
+        Map<String, Location> homes = homeManager.getPlayerHomes(targetUuid);
+
+        if (homes.isEmpty()) {
+            player.sendMessage(messageManager.getHomeListEmpty());
+            return;
+        }
+
+        int inventorySize = Math.min(54, (int) (Math.ceil(homes.size() / 9.0) * 9));
+        Inventory inventory = Bukkit.createInventory(null, inventorySize,
+                messageManager.translateColors("&e" + targetName + " - Homes"));
+
+        int slot = 0;
+        for (Map.Entry<String, Location> entry : homes.entrySet()) {
+            if (slot >= inventorySize)
+                break;
+
+            ItemStack homeItem = createHomeItem(entry.getKey(), entry.getValue());
+            inventory.setItem(slot, homeItem);
+            slot++;
+        }
+
+        player.openInventory(inventory);
+    }
+
+    /**
+     * Crée un item pour un home
+     */
+    private ItemStack createHomeItem(String homeName, Location location) {
+        ItemStack item = new ItemStack(Material.ENDER_PEARL);
+        ItemMeta meta = item.getItemMeta();
+
+        if (meta == null) {
+            return item;
+        }
+
+        meta.setDisplayName(messageManager.translateColors("&e" + homeName));
+
+        List<String> lore = new ArrayList<>();
+        String world = location.getWorld() != null ? location.getWorld().getName() : "Inconnue";
+        lore.add(messageManager.translateColors("&7Monde: &f" + world));
+        lore.add(messageManager.translateColors("&7Coordinates: &fX: " + location.getBlockX() +
+                " Y: " + location.getBlockY() + " Z: " + location.getBlockZ()));
+        lore.add("");
+        lore.add(messageManager.translateColors("&a→ Cliquez pour vous téléporter"));
+
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+
+        return item;
+    }
+
     private void teleportHome(Player player, String homeName) {
         Location home = homeManager.getHome(player.getUniqueId(), homeName);
 
@@ -158,9 +263,14 @@ public class HomeCommand implements CommandExecutor {
     private void sendUsage(Player player) {
         player.sendMessage(messageManager.translateColors("&e=== Commandes Homes ==="));
         player.sendMessage(messageManager.translateColors("&a/home &7- Téléporter au premier home"));
+        player.sendMessage(messageManager.translateColors("&a/home gui &7- Ouvrir l'interface GUI"));
         player.sendMessage(messageManager.translateColors("&a/home set <nom> &7- Créer un home"));
         player.sendMessage(messageManager.translateColors("&a/home tp <nom> &7- Téléporter à un home"));
         player.sendMessage(messageManager.translateColors("&a/home delete <nom> &7- Supprimer un home"));
         player.sendMessage(messageManager.translateColors("&a/home list &7- Lister vos homes"));
+        if (player.hasPermission("egoriamc.home.staff")) {
+            player.sendMessage(
+                    messageManager.translateColors("&a/home staffhomes <joueur> &7- Voir les homes d'un joueur"));
+        }
     }
 }

@@ -72,6 +72,13 @@ public class MessageManager {
         return message.replace("&", "§");
     }
 
+    /**
+     * Enlève les codes de couleur d'un message
+     */
+    public String stripColors(String message) {
+        return message.replaceAll("§[0-9a-fk-or]", "").replaceAll("&[0-9a-fk-or]", "");
+    }
+
     // Messages pour les homes
     public String getHomeSetSuccess(String name) {
         return getMessageWithMap("homes.set-success",

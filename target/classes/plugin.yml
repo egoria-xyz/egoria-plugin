@@ -12,7 +12,7 @@ commands:
     permission: egoriamc.help
   home:
     description: Permet de gérer vos homes
-    usage: /home [set|delete|list|tp <name>]
+    usage: /home [set|delete|list|gui|tp|staffhomes <name>]
     permission: egoriamc.home.use
   warp:
     description: Permet de gérer les warps
@@ -40,6 +40,9 @@ permissions:
     default: true
   egoriamc.home.admin:
     description: Permet de gérer les homes d'autres joueurs
+    default: op
+  egoriamc.home.staff:
+    description: Permet de voir les homes des joueurs (Staff)
     default: op
   egoriamc.warp.use:
     description: Permet de se téléporter aux warps
