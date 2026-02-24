@@ -1,0 +1,12 @@
+me\egoriamc\manager\HomeManager.class
+me\egoriamc\listener\PlayerEventListener.class
+me\egoriamc\command\WarpCommand.class
+me\egoriamc\EgoraIMC.class
+me\egoriamc\command\HomeCommand.class
+me\egoriamc\listener\MentionListener.class
+me\egoriamc\manager\ConfigManager.class
+me\egoriamc\command\HelpCommand.class
+me\egoriamc\manager\WarpManager.class
+me\egoriamc\util\EmojiUtil.class
+me\egoriamc\command\PluginsCommand.class
+me\egoriamc\manager\MessageManager.class

@@ -1,0 +1,47 @@
+# Messages personnalisables du serveur
+# ===================================
+
+# Messages des homes
+homes:
+  set-success: "&aVotre home &e{name}&a a été créé avec succès !"
+  delete-success: "&aVotre home &e{name}&a a été supprimé !"
+  tp-success: "&aTéléportation vers le home &e{name}&a..."
+  not-found: "&cCe home n'existe pas."
+  limit-reached: "&cVous avez atteint le nombre maximum de homes (&e{max}&c)."
+  list-empty: "&cVous n'avez aucun home."
+  list-header: "&e=== Vos homes ==="
+  list-item: "&a- &e{name} &7({world})"
+
+# Messages de join
+join:
+  # Format: {player} pour le nom du joueur, {date} pour la date/heure
+  message: "&6{player} &erejoint le serveur"
+  # Utiliser un emoji avant le message
+  emoji: "member"
+
+# Messages de leave
+leave:
+  message: "&6{player} &ea quitté le serveur"
+  emoji: "member"
+
+# Messages de mort
+death:
+  # {player} = nom du joueur, {cause} = cause de la mort, {killer} = tueur (s'il existe)
+  message: "&c{player} &eest mort &7({cause})"
+  emoji: "developer"
+  
+  # Messages spécifiques par cause (optionnel)
+  by-player: "&c{player} &ea été tué par &c{killer}"
+  lava: "&c{player} &ea brûlé dans la lave"
+  void: "&c{player} &ea chuté dans le vide"
+
+# Messages des warps
+warps:
+  set-success: "&aLe warp &e{name}&a a été créé avec succès !"
+  delete-success: "&aLe warp &e{name}&a a été supprimé !"
+  tp-success: "&aTéléportation vers le warp &e{name}&a..."
+  not-found: "&cCe warp n'existe pas."
+  already-exists: "&cLe warp &e{name}&c existe déjà."
+  list-empty: "&cAucun warp disponible."
+  list-header: "&e=== Warps disponibles ==="
+  list-item: "&a- &e{name} &7(créé par &e{creator}&7)"

@@ -1,0 +1,44 @@
+name: EgoraIMC
+version: 1.0
+main: me.egoriamc.EgoraIMC
+authors:
+  - egoriamc
+description: Plugin de gestion des homes et messages personnalisés
+
+commands:
+  help:
+    description: Affiche l'aide du plugin
+    usage: /help
+    permission: egoriamc.help
+  home:
+    description: Permet de gérer vos homes
+    usage: /home [set|delete|list|tp <name>]
+    permission: egoriamc.home.use
+  warp:
+    description: Permet de gérer les warps
+    usage: /warp [set|delete|list|info <name>|<name>]
+    permission: egoriamc.warp.use
+  plugins:
+    description: Affiche la liste des plugins
+    usage: /plugins
+    permission: egoriamc.plugins
+
+permissions:
+  egoriamc.help:
+    description: Permet de voir l'aide du plugin
+    default: true
+  egoriamc.plugins:
+    description: Permet de voir la liste des plugins
+    default: true
+  egoriamc.home.use:
+    description: Permet d'utiliser les homes
+    default: true
+  egoriamc.home.admin:
+    description: Permet de gérer les homes d'autres joueurs
+    default: op
+  egoriamc.warp.use:
+    description: Permet de se téléporter aux warps
+    default: true
+  egoriamc.warp.admin:
+    description: Permet de créer/supprimer des warps
+    default: op
