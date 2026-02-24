@@ -1,8 +1,9 @@
-# Résumé du Projet - EgoraIMC Plugin
+# Résumé du Projet - EgoriaMC Plugin
 
 ## ✅ Checklist de Réalisation
 
 ### Fonctionnalités Implémentées
+
 - [x] **Gestion des homes joueur**
   - [x] Création de homes (`/home set`)
   - [x] Suppression de homes (`/home delete`)
@@ -44,7 +45,7 @@
 egoriamc-bukkit/
 ├── src/main/
 │   ├── java/me/egoriamc/         # Code source Java
-│   │   ├── EgoraIMC.java         # Classe principale
+│   │   ├── EgoriaMC.java         # Classe principale
 │   │   ├── util/
 │   │   │   └── EmojiUtil.java
 │   │   ├── manager/
@@ -71,50 +72,54 @@ egoriamc-bukkit/
 
 ## 📊 Statistiques du Projet
 
-| Métrique | Valeur |
-|----------|--------|
-| Fichiers Java | 7 |
-| Lignes de code | ~700 |
-| Classes | 7 |
-| Interfaces implémentées | 2 |
-| Fichiers de configuration | 3 |
-| Fichiers de documentation | 5 |
-| Taille du JAR | 19.5 KB |
-| Version Java | 21 |
-| Version Bukkit | 1.21.1+ |
+| Métrique                  | Valeur  |
+| ------------------------- | ------- |
+| Fichiers Java             | 7       |
+| Lignes de code            | ~700    |
+| Classes                   | 7       |
+| Interfaces implémentées   | 2       |
+| Fichiers de configuration | 3       |
+| Fichiers de documentation | 5       |
+| Taille du JAR             | 19.5 KB |
+| Version Java              | 21      |
+| Version Bukkit            | 1.21.1+ |
 
 ## 🎯 Classes et Responsabilités
 
-| Classe | Responsabilité |
-|--------|----------|
-| `EgoraIMC` | Point d'entrée, initialisation, gestion du cycle de vie |
-| `ConfigManager` | Chargement et gestion des fichiers de configuration |
-| `MessageManager` | Gestion des messages avec placeholders et emojis |
-| `HomeManager` | Gestion des homes (CRUD, cache, sauvegarde) |
-| `HomeCommand` | Implémentation de la commande `/home` |
-| `PlayerEventListener` | Écoute des événements de joueurs |
-| `EmojiUtil` | Utilitaire pour l'accès aux emojis du resource pack |
+| Classe                | Responsabilité                                          |
+| --------------------- | ------------------------------------------------------- |
+| `EgoriaMC`            | Point d'entrée, initialisation, gestion du cycle de vie |
+| `ConfigManager`       | Chargement et gestion des fichiers de configuration     |
+| `MessageManager`      | Gestion des messages avec placeholders et emojis        |
+| `HomeManager`         | Gestion des homes (CRUD, cache, sauvegarde)             |
+| `HomeCommand`         | Implémentation de la commande `/home`                   |
+| `PlayerEventListener` | Écoute des événements de joueurs                        |
+| `EmojiUtil`           | Utilitaire pour l'accès aux emojis du resource pack     |
 
 ## 🔧 Caractéristiques Techniques
 
 ### Gestion de Configuration
+
 - Réchargement au démarrage
 - Sauvegarde asynchrone
 - Support YAML natif Bukkit
 - Validation des paramètres
 
 ### Gestion des Homes
+
 - Cache en mémoire pour performance
 - Sauvegarde en fichier YAML
 - Limitation par joueur
 - Validation des noms
 
 ### Gestion des Événements
+
 - PlayerJoinEvent
 - PlayerQuitEvent
 - PlayerDeathEvent avec analyse de cause
 
 ### Permissions
+
 - `egoriamc.home.use` - Utiliser les homes
 - `egoriamc.home.admin` - Admin homes
 
@@ -132,6 +137,7 @@ egoriamc-bukkit/
 ## 🚀 Comment Utiliser
 
 ### Installation Rapide
+
 ```bash
 # 1. Compiler
 mvn clean package
@@ -143,6 +149,7 @@ copy target\egoriamc-plugin-1.0-SNAPSHOT.jar <serveur>\plugins\
 ```
 
 ### Utilisation en Jeu
+
 ```
 /home set maison          # Créer un home
 /home list               # Lister les homes
@@ -153,6 +160,7 @@ copy target\egoriamc-plugin-1.0-SNAPSHOT.jar <serveur>\plugins\
 ## 📚 Documentation
 
 Consulter les fichiers :
+
 - **[README.md](README.md)** - Vue d'ensemble et guide d'utilisation
 - **[INSTALLATION.md](INSTALLATION.md)** - Guide d'installation détaillé
 - **[DEPLOIEMENT.md](DEPLOIEMENT.md)** - Guide de déploiement sur serveur
@@ -183,13 +191,17 @@ Consulter les fichiers :
 ## ✨ Highlights du Code
 
 ### Pattern Manager
+
 Le plugin utilise le pattern Manager pour une séparation claire des responsabilités :
+
 - ConfigManager : Configuration
 - MessageManager : Messages et localisation
 - HomeManager : Logique métier des homes
 
 ### Utilitaire Emojis
+
 `EmojiUtil` fournit une abstraction simple pour les emojis :
+
 ```java
 // Utilisation simple
 EmojiUtil.getEmoji("member");
@@ -197,7 +209,9 @@ EmojiUtil.formatWithEmoji("admin", message);
 ```
 
 ### Sauvegarde Asynchrone
+
 Les données se sauvent de manière asynchrone pour ne pas bloquer le serveur :
+
 ```java
 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
     // Sauvegarde
@@ -205,7 +219,9 @@ Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 ```
 
 ### Validation d'Entrée
+
 Les noms de homes sont validés :
+
 ```
 - Longueur max: 16 caractères
 - Caractères autorisés: a-z, 0-9, -, _
@@ -218,6 +234,6 @@ Les noms de homes sont validés :
 
 ## 🎉 Conclusion
 
-Le plugin **EgoraIMC** est une solution complète, propre et extensible pour la gestion des homes et des messages sur un serveur Bukkit 1.21.1+.
+Le plugin **EgoriaMC** est une solution complète, propre et extensible pour la gestion des homes et des messages sur un serveur Bukkit 1.21.1+.
 
 Prêt à être déployé en production ! 🚀

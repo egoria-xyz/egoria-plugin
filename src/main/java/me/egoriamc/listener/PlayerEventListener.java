@@ -1,6 +1,6 @@
 package me.egoriamc.listener;
 
-import me.egoriamc.EgoraIMC;
+import me.egoriamc.EgoriaMC;
 import me.egoriamc.manager.MessageManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,10 +14,10 @@ import org.bukkit.event.player.PlayerQuitEvent;
  */
 public class PlayerEventListener implements Listener {
 
-    private final EgoraIMC plugin;
+    private final EgoriaMC plugin;
     private final MessageManager messageManager;
 
-    public PlayerEventListener(EgoraIMC plugin) {
+    public PlayerEventListener(EgoriaMC plugin) {
         this.plugin = plugin;
         this.messageManager = plugin.getMessageManager();
     }
@@ -60,8 +60,7 @@ public class PlayerEventListener implements Listener {
      * Récupère la cause de la mort du joueur
      */
     private String getDeathCause(PlayerDeathEvent event) {
-        org.bukkit.event.entity.EntityDamageEvent.DamageCause cause = 
-            event.getEntity().getLastDamageCause().getCause();
+        org.bukkit.event.entity.EntityDamageEvent.DamageCause cause = event.getEntity().getLastDamageCause().getCause();
 
         if (cause == null) {
             return "inconnu";

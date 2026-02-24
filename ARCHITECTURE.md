@@ -1,4 +1,4 @@
-# Architecture - EgoraIMC Plugin
+# Architecture - EgoriaMC Plugin
 
 ## Structure du projet
 
@@ -6,7 +6,7 @@
 egoriamc-bukkit/
 ├── src/main/
 │   ├── java/me/egoriamc/
-│   │   ├── EgoraIMC.java                 # Classe principale du plugin
+│   │   ├── EgoriaMC.java                 # Classe principale du plugin
 │   │   ├── util/
 │   │   │   └── EmojiUtil.java            # Utilitaire pour les emojis
 │   │   ├── manager/
@@ -26,8 +26,10 @@ egoriamc-bukkit/
 
 ## Description des modules
 
-### EgoraIMC.java
+### EgoriaMC.java
+
 Point d'entrée du plugin. Gère:
+
 - L'initialisation des gestionnaires
 - L'enregistrement des commandes et événements
 - Les logs avec les emojis du resource pack
@@ -35,18 +37,24 @@ Point d'entrée du plugin. Gère:
 ### Managers
 
 #### ConfigManager
+
 Lit et stocke les configurations:
+
 - `config.yml` - Paramètres globaux
 - `messages.yml` - Messages personnalisables
 
 #### MessageManager
+
 Gère les messages:
+
 - Traduction des codes de couleur (`&` → `§`)
 - Remplacement des placeholders
 - Insertion des emojis
 
 #### HomeManager
+
 Gère les homes des joueurs:
+
 - Création/suppression de homes
 - Cache en mémoire pour performance
 - Sauvegarde en fichier YAML (`homes.yml`)
@@ -54,7 +62,9 @@ Gère les homes des joueurs:
 ### Commands
 
 #### HomeCommand
+
 Implémente la commande `/home`:
+
 - `/home` - Téléport au premier home
 - `/home set <nom>` - Créer un home
 - `/home tp <nom>` - Téléporter à un home
@@ -64,7 +74,9 @@ Implémente la commande `/home`:
 ### Listeners
 
 #### PlayerEventListener
+
 Écoute les événements:
+
 - `PlayerJoinEvent` - Affiche message de join
 - `PlayerQuitEvent` - Affiche message de leave
 - `PlayerDeathEvent` - Affiche message de mort avec cause
@@ -72,7 +84,9 @@ Implémente la commande `/home`:
 ### Utils
 
 #### EmojiUtil
+
 Fournis les emojis du resource pack:
+
 - Constantes : OWNER, ADMIN, DEVELOPER, STAFF, VIP, MEMBER
 - Méthode `getEmoji()` pour récupérer un emoji
 - Méthode `formatWithEmoji()` pour formater un message
@@ -80,6 +94,7 @@ Fournis les emojis du resource pack:
 ## Flux de données
 
 ### Démarrage du plugin
+
 ```
 onEnable()
   ├─ ConfigManager.reload() -> charge config.yml & messages.yml
@@ -90,6 +105,7 @@ onEnable()
 ```
 
 ### Utilisation d'un home
+
 ```
 /home set myHome
   ├─ HomeCommand.handleSet()
@@ -100,6 +116,7 @@ onEnable()
 ```
 
 ### Événement joueur
+
 ```
 Player joins
   ├─ PlayerEventListener.onPlayerJoin()
@@ -112,19 +129,25 @@ Player joins
 ## Stockage des données
 
 ### config.yml
+
 Paramètres globaux:
+
 - Nombre max de homes par joueur
 - Type de stockage
 - Paramètres de logging
 
 ### messages.yml
+
 Messages personnalisables:
+
 - Messages pour les homes
 - Messages pour join/leave/death
 - Support des placeholders
 
 ### homes.yml
+
 Données des homes (généré automatiquement):
+
 ```yaml
 <uuid-joueur>:
   <nom-home>:
@@ -134,19 +157,23 @@ Données des homes (généré automatiquement):
 ## Points d'extensibilité
 
 ### Ajouter une nouvelle commande
+
 1. Créer une classe `implements CommandExecutor`
-2. L'enregistrer dans `EgoraIMC.onEnable()`
+2. L'enregistrer dans `EgoriaMC.onEnable()`
 3. Ajouter l'entrée dans `plugin.yml`
 
 ### Ajouter un nouvel événement
+
 1. Créer une méthode avec `@EventHandler`
 2. L'ajouter à `PlayerEventListener`
 3. Utiliser `MessageManager` pour les messages
 
 ### Personnaliser les messages
+
 1. Modifier le fichier `messages.yml`
 2. Relancer le serveur OU utiliser une commande de reload (à développer)
 
 ### Utiliser les emojis
+
 1. Importer `EmojiUtil`
 2. Utiliser `EmojiUtil.getEmoji(type)` ou `EmojiUtil.formatWithEmoji(type, message)`

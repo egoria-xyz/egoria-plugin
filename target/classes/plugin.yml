@@ -1,6 +1,6 @@
-name: EgoraIMC
+name: EgoriaMC
 version: 1.0
-main: me.egoriamc.EgoraIMC
+main: me.egoriamc.EgoriaMC
 authors:
   - egoriamc
 description: Plugin de gestion des homes et messages personnalisés
@@ -22,6 +22,11 @@ commands:
     description: Affiche la liste des plugins
     usage: /plugins
     permission: egoriamc.plugins
+  annonce:
+    description: Envoie une annonce à tous les joueurs
+    usage: /annonce <message>
+    permission: egoriamc.announce
+    aliases: [announce, broadcast]
 
 permissions:
   egoriamc.help:
@@ -41,4 +46,7 @@ permissions:
     default: true
   egoriamc.warp.admin:
     description: Permet de créer/supprimer des warps
+    default: op
+  egoriamc.announce:
+    description: Permet d'envoyer des annonces à tous les joueurs
     default: op

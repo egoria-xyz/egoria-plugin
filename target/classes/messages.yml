@@ -29,7 +29,7 @@ death:
   # {player} = nom du joueur, {cause} = cause de la mort, {killer} = tueur (s'il existe)
   message: "&c{player} &eest mort &7({cause})"
   emoji: "developer"
-  
+
   # Messages spécifiques par cause (optionnel)
   by-player: "&c{player} &ea été tué par &c{killer}"
   lava: "&c{player} &ea brûlé dans la lave"
@@ -45,3 +45,9 @@ warps:
   list-empty: "&cAucun warp disponible."
   list-header: "&e=== Warps disponibles ==="
   list-item: "&a- &e{name} &7(créé par &e{creator}&7)"
+
+# Messages des annonces
+announce:
+  no-permission: "&cVous n'avez pas la permission d'envoyer des annonces."
+  usage: "&cUtilisation: &e/annonce <message>"
+  sent: "&aVotre annonce a été envoyée avec succès !"

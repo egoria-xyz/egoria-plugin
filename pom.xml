@@ -8,7 +8,7 @@
     <artifactId>egoriamc-plugin</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>EgoraIMC</name>
+    <name>EgoriaMC</name>
     <description>Plugin de gestion des homes et messages</description>
 
     <properties>

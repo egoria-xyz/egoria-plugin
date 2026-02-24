@@ -1,6 +1,6 @@
 package me.egoriamc.listener;
 
-import me.egoriamc.EgoraIMC;
+import me.egoriamc.EgoriaMC;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -16,10 +16,10 @@ import java.util.regex.Pattern;
  */
 public class MentionListener implements Listener {
 
-    private final EgoraIMC plugin;
+    private final EgoriaMC plugin;
     private final Pattern mentionPattern = Pattern.compile("@([a-zA-Z0-9_]{1,16})");
 
-    public MentionListener(EgoraIMC plugin) {
+    public MentionListener(EgoriaMC plugin) {
         this.plugin = plugin;
     }
 
@@ -50,11 +50,11 @@ public class MentionListener implements Listener {
                 Bukkit.getScheduler().runTask(plugin, () -> {
                     // Jouer un son configurable
                     String sound = plugin.getConfigManager().getConfig()
-                        .getString("mentions.sound", "ENTITY_EXPERIENCE_ORB_PICKUP");
+                            .getString("mentions.sound", "ENTITY_EXPERIENCE_ORB_PICKUP");
                     float volume = (float) plugin.getConfigManager().getConfig()
-                        .getDouble("mentions.volume", 1.0);
+                            .getDouble("mentions.volume", 1.0);
                     float pitch = (float) plugin.getConfigManager().getConfig()
-                        .getDouble("mentions.pitch", 1.0);
+                            .getDouble("mentions.pitch", 1.0);
 
                     try {
                         Sound notificationSound = Sound.valueOf(sound);

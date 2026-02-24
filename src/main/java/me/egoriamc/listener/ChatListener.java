@@ -1,6 +1,6 @@
 package me.egoriamc.listener;
 
-import me.egoriamc.EgoraIMC;
+import me.egoriamc.EgoriaMC;
 import me.egoriamc.util.EmojiUtil;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -12,9 +12,9 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
  */
 public class ChatListener implements Listener {
 
-    private final EgoraIMC plugin;
+    private final EgoriaMC plugin;
 
-    public ChatListener(EgoraIMC plugin) {
+    public ChatListener(EgoriaMC plugin) {
         this.plugin = plugin;
     }
 
@@ -25,10 +25,10 @@ public class ChatListener implements Listener {
         }
 
         String message = event.getMessage();
-        
+
         // Remplacer les codes emojis :emoji: par les emojis Unicode
         String processedMessage = EmojiUtil.replaceEmojis(message);
-        
+
         // Mettre à jour le message si des emojis ont été remplacés
         if (!message.equals(processedMessage)) {
             event.setMessage(processedMessage);

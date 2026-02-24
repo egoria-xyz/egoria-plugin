@@ -17,13 +17,12 @@ public class MessageManager {
 
     public MessageManager(JavaPlugin plugin) {
         this.plugin = plugin;
-        this.configManager = plugin.getServer().getPluginManager().getPlugin("EgoraIMC")
+        this.configManager = plugin.getServer().getPluginManager().getPlugin("EgoriaMC")
                 .toString().equals("") ? new ConfigManager(plugin) : null;
     }
 
     public ConfigManager getConfigManager() {
-        return plugin instanceof org.bukkit.plugin.Plugin ? 
-            new ConfigManager(plugin) : configManager;
+        return plugin instanceof org.bukkit.plugin.Plugin ? new ConfigManager(plugin) : configManager;
     }
 
     /**
@@ -75,18 +74,18 @@ public class MessageManager {
 
     // Messages pour les homes
     public String getHomeSetSuccess(String name) {
-        return getMessageWithMap("homes.set-success", 
-            Map.of("name", name));
+        return getMessageWithMap("homes.set-success",
+                Map.of("name", name));
     }
 
     public String getHomeDeleteSuccess(String name) {
         return getMessageWithMap("homes.delete-success",
-            Map.of("name", name));
+                Map.of("name", name));
     }
 
     public String getHomeTpSuccess(String name) {
         return getMessageWithMap("homes.tp-success",
-            Map.of("name", name));
+                Map.of("name", name));
     }
 
     public String getHomeNotFound() {
@@ -109,7 +108,7 @@ public class MessageManager {
 
     public String getHomeListItem(String name, String world) {
         return getMessageWithMap("homes.list-item",
-            Map.of("name", name, "world", world));
+                Map.of("name", name, "world", world));
     }
 
     // Messages pour les événements
@@ -150,18 +149,18 @@ public class MessageManager {
 
     // Messages pour les warps
     public String getWarpSetSuccess(String name) {
-        return getMessageWithMap("warps.set-success", 
-            java.util.Map.of("name", name));
+        return getMessageWithMap("warps.set-success",
+                java.util.Map.of("name", name));
     }
 
     public String getWarpDeleteSuccess(String name) {
         return getMessageWithMap("warps.delete-success",
-            java.util.Map.of("name", name));
+                java.util.Map.of("name", name));
     }
 
     public String getWarpTpSuccess(String name) {
         return getMessageWithMap("warps.tp-success",
-            java.util.Map.of("name", name));
+                java.util.Map.of("name", name));
     }
 
     public String getWarpNotFound() {
@@ -170,7 +169,7 @@ public class MessageManager {
 
     public String getWarpAlreadyExists(String name) {
         return getMessageWithMap("warps.already-exists",
-            java.util.Map.of("name", name));
+                java.util.Map.of("name", name));
     }
 
     public String getWarpListEmpty() {
@@ -183,6 +182,6 @@ public class MessageManager {
 
     public String getWarpListItem(String name, String creator) {
         return getMessageWithMap("warps.list-item",
-            java.util.Map.of("name", name, "creator", creator));
+                java.util.Map.of("name", name, "creator", creator));
     }
 }

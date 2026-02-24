@@ -1,6 +1,6 @@
 package me.egoriamc.command;
 
-import me.egoriamc.EgoraIMC;
+import me.egoriamc.EgoriaMC;
 import me.egoriamc.manager.HomeManager;
 import me.egoriamc.manager.MessageManager;
 import org.bukkit.Location;
@@ -16,11 +16,11 @@ import java.util.Map;
  */
 public class HomeCommand implements CommandExecutor {
 
-    private final EgoraIMC plugin;
+    private final EgoriaMC plugin;
     private final HomeManager homeManager;
     private final MessageManager messageManager;
 
-    public HomeCommand(EgoraIMC plugin) {
+    public HomeCommand(EgoriaMC plugin) {
         this.plugin = plugin;
         this.homeManager = plugin.getHomeManager();
         this.messageManager = plugin.getMessageManager();
@@ -74,12 +74,14 @@ public class HomeCommand implements CommandExecutor {
 
         // Valider le nom
         if (homeName.length() > 16) {
-            player.sendMessage(messageManager.translateColors("₾ → &7Le nom du home ne peut pas dépasser 16 caractères."));
+            player.sendMessage(
+                    messageManager.translateColors("₾ → &7Le nom du home ne peut pas dépasser 16 caractères."));
             return;
         }
 
         if (!homeName.matches("^[a-zA-Z0-9_-]+$")) {
-            player.sendMessage(messageManager.translateColors("₾ → &7Nom invalide. Utilisez uniquement des lettres, chiffres, - et _."));
+            player.sendMessage(messageManager
+                    .translateColors("₾ → &7Nom invalide. Utilisez uniquement des lettres, chiffres, - et _."));
             return;
         }
 
@@ -87,11 +89,11 @@ public class HomeCommand implements CommandExecutor {
 
         if (homeManager.createHome(player, homeName, location)) {
             player.sendMessage(messageManager.getHomeSetSuccess(homeName));
-            plugin.logInfo(messageManager.translateColors("₾ → &a" + player.getName() + " &ea créé un home: &b" + homeName));
+            plugin.logInfo(
+                    messageManager.translateColors("₾ → &a" + player.getName() + " &ea créé un home: &b" + homeName));
         } else {
             player.sendMessage(messageManager.getHomeLimitReached(
-                plugin.getConfigManager().getMaxHomes()
-            ));
+                    plugin.getConfigManager().getMaxHomes()));
         }
     }
 
@@ -105,7 +107,8 @@ public class HomeCommand implements CommandExecutor {
 
         if (homeManager.deleteHome(player.getUniqueId(), homeName)) {
             player.sendMessage(messageManager.getHomeDeleteSuccess(homeName));
-            plugin.logInfo(messageManager.translateColors("₾ → &a" + player.getName() + " &ea supprimé le home: &b" + homeName));
+            plugin.logInfo(messageManager
+                    .translateColors("₾ → &a" + player.getName() + " &ea supprimé le home: &b" + homeName));
         } else {
             player.sendMessage(messageManager.getHomeNotFound());
         }
@@ -148,7 +151,8 @@ public class HomeCommand implements CommandExecutor {
 
         player.teleport(home);
         player.sendMessage(messageManager.getHomeTpSuccess(homeName));
-        plugin.logInfo(messageManager.translateColors("₾ → &a" + player.getName() + " &es'est téléporté au home: &b" + homeName));
+        plugin.logInfo(messageManager
+                .translateColors("₾ → &a" + player.getName() + " &es'est téléporté au home: &b" + homeName));
     }
 
     private void sendUsage(Player player) {

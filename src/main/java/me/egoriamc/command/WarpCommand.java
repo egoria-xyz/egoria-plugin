@@ -1,6 +1,6 @@
 package me.egoriamc.command;
 
-import me.egoriamc.EgoraIMC;
+import me.egoriamc.EgoriaMC;
 import me.egoriamc.manager.MessageManager;
 import me.egoriamc.manager.WarpManager;
 import org.bukkit.Location;
@@ -16,11 +16,11 @@ import java.util.Map;
  */
 public class WarpCommand implements CommandExecutor {
 
-    private final EgoraIMC plugin;
+    private final EgoriaMC plugin;
     private final WarpManager warpManager;
     private final MessageManager messageManager;
 
-    public WarpCommand(EgoraIMC plugin) {
+    public WarpCommand(EgoriaMC plugin) {
         this.plugin = plugin;
         this.warpManager = plugin.getWarpManager();
         this.messageManager = plugin.getMessageManager();
@@ -29,7 +29,7 @@ public class WarpCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("§c[EgoraIMC] Cette commande ne peut être utilisée que par un joueur.");
+            sender.sendMessage("§c[EgoriaMC] Cette commande ne peut être utilisée que par un joueur.");
             return true;
         }
 
@@ -72,7 +72,8 @@ public class WarpCommand implements CommandExecutor {
         }
 
         if (!warpName.matches("^[a-zA-Z0-9_-]+$")) {
-            player.sendMessage(messageManager.translateColors("&cNom invalide. Utilisez uniquement des lettres, chiffres, - et _."));
+            player.sendMessage(messageManager
+                    .translateColors("&cNom invalide. Utilisez uniquement des lettres, chiffres, - et _."));
             return;
         }
 
@@ -80,7 +81,8 @@ public class WarpCommand implements CommandExecutor {
 
         if (warpManager.createWarp(warpName, location, player.getName())) {
             player.sendMessage(messageManager.getWarpSetSuccess(warpName));
-            plugin.logInfo(messageManager.translateColors("&a" + player.getName() + " &ea créé le warp: &b" + warpName));
+            plugin.logInfo(
+                    messageManager.translateColors("&a" + player.getName() + " &ea créé le warp: &b" + warpName));
         } else {
             player.sendMessage(messageManager.getWarpAlreadyExists(warpName));
         }
@@ -101,7 +103,8 @@ public class WarpCommand implements CommandExecutor {
 
         if (warpManager.deleteWarp(warpName)) {
             player.sendMessage(messageManager.getWarpDeleteSuccess(warpName));
-            plugin.logInfo(messageManager.translateColors("&a" + player.getName() + " &ea supprimé le warp: &b" + warpName));
+            plugin.logInfo(
+                    messageManager.translateColors("&a" + player.getName() + " &ea supprimé le warp: &b" + warpName));
         } else {
             player.sendMessage(messageManager.getWarpNotFound());
         }
@@ -138,12 +141,12 @@ public class WarpCommand implements CommandExecutor {
 
         String creator = warpManager.getWarpCreator(warpName);
         String world = warp.getWorld() != null ? warp.getWorld().getName() : "Inconnue";
-        
+
         player.sendMessage(messageManager.translateColors("&e=== Info Warp: " + warpName + " ==="));
         player.sendMessage(messageManager.translateColors("&aLieu: &e" + world));
-        player.sendMessage(messageManager.translateColors("&aCoordonnées: &eX:" + 
-            String.format("%.1f", warp.getX()) + " Y:" + String.format("%.1f", warp.getY()) + 
-            " Z:" + String.format("%.1f", warp.getZ())));
+        player.sendMessage(messageManager.translateColors("&aCoordonnées: &eX:" +
+                String.format("%.1f", warp.getX()) + " Y:" + String.format("%.1f", warp.getY()) +
+                " Z:" + String.format("%.1f", warp.getZ())));
         player.sendMessage(messageManager.translateColors("&aCréateur: &e" + creator));
     }
 
@@ -162,7 +165,8 @@ public class WarpCommand implements CommandExecutor {
 
         player.teleport(warp);
         player.sendMessage(messageManager.getWarpTpSuccess(warpName));
-        plugin.logInfo(messageManager.translateColors("&a" + player.getName() + " &es'est téléporté au warp: &b" + warpName));
+        plugin.logInfo(
+                messageManager.translateColors("&a" + player.getName() + " &es'est téléporté au warp: &b" + warpName));
     }
 
     private void sendUsage(Player player) {
@@ -170,7 +174,7 @@ public class WarpCommand implements CommandExecutor {
         player.sendMessage(messageManager.translateColors("&a/warp <nom> &7- Téléporter à un warp"));
         player.sendMessage(messageManager.translateColors("&a/warp list &7- Lister les warps"));
         player.sendMessage(messageManager.translateColors("&a/warp info <nom> &7- Info sur un warp"));
-        
+
         if (player.hasPermission("egoriamc.warp.admin")) {
             player.sendMessage(messageManager.translateColors("&a/warp set <nom> &7- Créer un warp (Admin)"));
             player.sendMessage(messageManager.translateColors("&a/warp delete <nom> &7- Supprimer un warp (Admin)"));

@@ -16,9 +16,9 @@ import me.egoriamc.util.EmojiUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class EgoraIMC extends JavaPlugin {
+public class EgoriaMC extends JavaPlugin {
 
-    private static EgoraIMC instance;
+    private static EgoriaMC instance;
     private ConfigManager configManager;
     private MessageManager messageManager;
     private HomeManager homeManager;
@@ -78,14 +78,14 @@ public class EgoraIMC extends JavaPlugin {
      * Affiche un message d'information avec emoji
      */
     public void logInfo(String message) {
-        Bukkit.getConsoleSender().sendMessage("§ f[EgoraIMC] " + translateHexColorCodes(message));
+        Bukkit.getConsoleSender().sendMessage("§ f[EgoriaMC] " + translateHexColorCodes(message));
     }
 
     /**
      * Affiche un message d'erreur
      */
     public void logError(String message) {
-        Bukkit.getConsoleSender().sendMessage("§c[EgoraIMC] " + translateHexColorCodes(message));
+        Bukkit.getConsoleSender().sendMessage("§c[EgoriaMC] " + translateHexColorCodes(message));
     }
 
     /**
@@ -95,7 +95,7 @@ public class EgoraIMC extends JavaPlugin {
         return message.replace("&", "§");
     }
 
-    public static EgoraIMC getInstance() {
+    public static EgoriaMC getInstance() {
         return instance;
     }
 

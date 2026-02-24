@@ -1,8 +1,9 @@
-# Exemples de Configuration - EgoraIMC Plugin
+# Exemples de Configuration - EgoriaMC Plugin
 
 ## Messages de Bienvenue Personnalisés
 
 ### Exemple 1 : Messages simples
+
 ```yaml
 join:
   message: "&6{player} &erejoint le serveur"
@@ -14,12 +15,14 @@ leave:
 ```
 
 Résultat console :
+
 ```
 ϼ 6Player123 erejoint le serveur
 ϼ 6Player123 ea quitté le serveur
 ```
 
 ### Exemple 2 : Messages avec style
+
 ```yaml
 join:
   message: "&b━━━━ &6{player} &bestà arrivé! &b━━━━"
@@ -31,6 +34,7 @@ leave:
 ```
 
 ### Exemple 3 : Messages spécifiques aux rôles (à faire manuellement)
+
 ```yaml
 # Pour les VIP
 join:
@@ -46,6 +50,7 @@ leave:
 ## Messages de Mort
 
 ### Exemple 1 : Messages basiques
+
 ```yaml
 death:
   message: "&c{player} &eest mort &7({cause})"
@@ -54,6 +59,7 @@ death:
 ```
 
 ### Exemple 2 : Messages détaillés avec style
+
 ```yaml
 death:
   message: "&c ✘ {player} &eest mort &7({cause})"
@@ -64,6 +70,7 @@ death:
 ```
 
 ### Exemple 3 : Messages fleuris
+
 ```yaml
 death:
   message: "&7[&cDécès&7] &6{player} &7- Cause: &e{cause}"
@@ -74,6 +81,7 @@ death:
 ## Configurations des Homes
 
 ### Exemple 1 : Limite basse (serveur de test)
+
 ```yaml
 homes:
   max-homes: 1
@@ -81,6 +89,7 @@ homes:
 ```
 
 ### Exemple 2 : Limite moyenne (serveur classique)
+
 ```yaml
 homes:
   max-homes: 5
@@ -88,6 +97,7 @@ homes:
 ```
 
 ### Exemple 3 : Limite haute (serveur VIP)
+
 ```yaml
 homes:
   max-homes: 10
@@ -97,6 +107,7 @@ homes:
 ### Messages de homes personnalisés
 
 #### Exemple 1 : Messages courts
+
 ```yaml
 homes:
   set-success: "&a✓ {name}"
@@ -107,6 +118,7 @@ homes:
 ```
 
 #### Exemple 2 : Messages détaillés
+
 ```yaml
 homes:
   set-success: "&aVotre home &e{name}&a a été créé avec succès!"
@@ -119,6 +131,7 @@ homes:
 ```
 
 #### Exemple 3 : Avec emojis dans les messages
+
 ```yaml
 homes:
   set-success: "&aVotre home &e{name} &aa été créé &a✓"
@@ -131,6 +144,7 @@ homes:
 ## Configuration Recommandée pour Différents Serveurs
 
 ### Serveur Vanilla Pure
+
 ```yaml
 homes:
   max-homes: 3
@@ -154,6 +168,7 @@ death:
 ```
 
 ### Serveur RPG
+
 ```yaml
 homes:
   max-homes: 5
@@ -177,6 +192,7 @@ death:
 ```
 
 ### Serveur Compétitif
+
 ```yaml
 homes:
   max-homes: 1
@@ -200,6 +216,7 @@ death:
 ```
 
 ### Serveur Casual/Friendly
+
 ```yaml
 homes:
   max-homes: 10
@@ -224,33 +241,33 @@ death:
 
 ## Codes Couleur Bukkit
 
-| Code | Couleur |
-|------|---------|
-| &0 | Noir |
-| &1 | Bleu marine |
-| &2 | Vert |
-| &3 | Cyan |
-| &4 | Rouge |
-| &5 | Magenta |
-| &6 | Orange |
-| &7 | Gris clair |
-| &8 | Gris foncé |
-| &9 | Bleu |
-| &a | Vert clair |
-| &b | Cyan clair |
-| &c | Rouge clair |
-| &d | Rose |
-| &e | Jaune |
-| &f | Blanc |
+| Code | Couleur     |
+| ---- | ----------- |
+| &0   | Noir        |
+| &1   | Bleu marine |
+| &2   | Vert        |
+| &3   | Cyan        |
+| &4   | Rouge       |
+| &5   | Magenta     |
+| &6   | Orange      |
+| &7   | Gris clair  |
+| &8   | Gris foncé  |
+| &9   | Bleu        |
+| &a   | Vert clair  |
+| &b   | Cyan clair  |
+| &c   | Rouge clair |
+| &d   | Rose        |
+| &e   | Jaune       |
+| &f   | Blanc       |
 
-| Code | Style |
-|------|-------|
-| &l | Gras |
-| &m | Barré |
-| &n | Souligné |
-| &o | Italique |
-| &k | Aléatoire |
-| &r | Réinitialiser |
+| Code | Style         |
+| ---- | ------------- |
+| &l   | Gras          |
+| &m   | Barré         |
+| &n   | Souligné      |
+| &o   | Italique      |
+| &k   | Aléatoire     |
+| &r   | Réinitialiser |
 
 ## Exemple de Message Complexe
 
@@ -266,6 +283,7 @@ death:
 ```
 
 Résultat :
+
 ```
 ─────── Welcome Player123 ───────
 ⚰ Player123 is dead. Cause: fall
@@ -275,11 +293,13 @@ Résultat :
 ## Placeholders Disponibles
 
 ### Homes
+
 - `{name}` - Nom du home
 - `{world}` - Monde du home
 - `{max}` - Nombre maximum de homes
 
 ### Events
+
 - `{player}` - Nom du joueur
 - `{killer}` - Nom du tueur (death)
 - `{cause}` - Cause de la mort (death)

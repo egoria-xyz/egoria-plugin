@@ -17,17 +17,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Commande /plugins - Affiche un GUI avec la liste des plugins
+ * Commande /plugins - Affiche un GUI avec la liste des plugins sur plusieurs
+ * pages
  */
 public class PluginsCommand implements CommandExecutor {
 
     private static final int INVENTORY_SIZE = 27;
-    private static final String EGORIAMC_PLUGIN_NAME = "EgoraIMC";
+    private static final int PLUGINS_PER_PAGE = 25; // 25 plugins + 2 boutons de navigation
+    private static final String EGORIAMC_PLUGIN_NAME = "EgoriaMC";
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("§c[EgoraIMC] Cette commande ne peut être utilisée que par un joueur.");
+            sender.sendMessage("§c[EgoriaMC] Cette commande ne peut être utilisée que par un joueur.");
             return true;
         }
 
@@ -36,8 +38,21 @@ public class PluginsCommand implements CommandExecutor {
             return true;
         }
 
+        // Récupérer la page demandée (par défaut 1)
+        int page = 1;
+        if (args.length > 0) {
+            try {
+                page = Integer.parseInt(args[0]);
+                if (page < 1)
+                    page = 1;
+            } catch (NumberFormatException e) {
+                player.sendMessage("§cNuméro de page invalide.");
+                return true;
+            }
+        }
+
         // Créer l'inventaire
-        Inventory inventory = createPluginsInventory(player);
+        Inventory inventory = createPluginsInventory(player, page);
         player.openInventory(inventory);
 
         return true;
@@ -46,24 +61,69 @@ public class PluginsCommand implements CommandExecutor {
     /**
      * Crée l'inventaire avec la liste des plugins
      */
-    private Inventory createPluginsInventory(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, INVENTORY_SIZE, 
-            "§ePlugins du Serveur");
-
+    private Inventory createPluginsInventory(Player player, int page) {
         // Récupérer tous les plugins
-        Plugin[] plugins = Bukkit.getPluginManager().getPlugins();
+        Plugin[] allPlugins = Bukkit.getPluginManager().getPlugins();
 
-        // Ajouter un item pour chaque plugin
+        // Calculer le nombre de pages
+        int totalPages = (int) Math.ceil((double) allPlugins.length / PLUGINS_PER_PAGE);
+        if (page > totalPages)
+            page = totalPages;
+        if (page < 1)
+            page = 1;
+
+        // Créer le titre avec le numéro de page
+        String title = "§ePlugins du Serveur (" + page + "/" + totalPages + ")";
+        Inventory inventory = Bukkit.createInventory(null, INVENTORY_SIZE, title);
+
+        // Calculer les indices de début et fin
+        int startIndex = (page - 1) * PLUGINS_PER_PAGE;
+        int endIndex = Math.min(startIndex + PLUGINS_PER_PAGE, allPlugins.length);
+
+        // Ajouter un item pour chaque plugin de cette page
         int slot = 0;
-        for (Plugin plugin : plugins) {
-            if (slot >= INVENTORY_SIZE) break;
-
-            ItemStack item = createPluginItem(plugin);
+        for (int i = startIndex; i < endIndex; i++) {
+            if (slot >= 25)
+                break; // Garder 2 slots pour les boutons de navigation
+            ItemStack item = createPluginItem(allPlugins[i]);
             inventory.setItem(slot, item);
             slot++;
         }
 
+        // Ajouter les boutons de navigation
+        if (page > 1) {
+            ItemStack previousButton = createNavigationButton("§e◄ Page Précédente", page - 1);
+            inventory.setItem(25, previousButton);
+        }
+
+        if (page < totalPages) {
+            ItemStack nextButton = createNavigationButton("§eProchaine Page ►", page + 1);
+            inventory.setItem(26, nextButton);
+        }
+
         return inventory;
+    }
+
+    /**
+     * Crée un bouton de navigation
+     */
+    private ItemStack createNavigationButton(String displayName, int page) {
+        ItemStack item = new ItemStack(Material.ARROW);
+        ItemMeta meta = item.getItemMeta();
+
+        if (meta == null) {
+            return item;
+        }
+
+        meta.setDisplayName(displayName);
+
+        List<String> lore = new ArrayList<>();
+        lore.add("§7Cliquez pour aller à la page " + page);
+        lore.add("§7Commande: §f/plugins " + page);
+        meta.setLore(lore);
+
+        item.setItemMeta(meta);
+        return item;
     }
 
     /**
@@ -94,8 +154,8 @@ public class PluginsCommand implements CommandExecutor {
         }
 
         // Ajouter la description si disponible
-        if (plugin.getDescription().getDescription() != null && 
-            !plugin.getDescription().getDescription().isEmpty()) {
+        if (plugin.getDescription().getDescription() != null &&
+                !plugin.getDescription().getDescription().isEmpty()) {
             lore.add("");
             lore.add("§7Description:");
             String description = plugin.getDescription().getDescription();
@@ -109,13 +169,13 @@ public class PluginsCommand implements CommandExecutor {
 
         meta.setLore(lore);
 
-        // Enchanter le plugin EgoraIMC
+        // Enchanter le plugin EgoriaMC
         if (plugin.getName().equalsIgnoreCase(EGORIAMC_PLUGIN_NAME)) {
             meta.addEnchant(Enchantment.UNBREAKING, 1, true);
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             // Changer la couleur du nom pour l'identifier
             meta.setDisplayName("§6✨ " + plugin.getName() + " ✨");
-            
+
             // Ajouter un indicateur dans la lore
             List<String> updatedLore = meta.getLore();
             updatedLore.add(0, "§6➤ Développé par le serveur");

@@ -1,6 +1,6 @@
 package me.egoriamc.manager;
 
-import me.egoriamc.EgoraIMC;
+import me.egoriamc.EgoriaMC;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -15,12 +15,12 @@ import java.util.*;
  */
 public class WarpManager {
 
-    private final EgoraIMC plugin;
+    private final EgoriaMC plugin;
     private final File warpsFile;
     private FileConfiguration warpsConfig;
     private final Map<String, Location> warpsCache;
 
-    public WarpManager(EgoraIMC plugin) {
+    public WarpManager(EgoriaMC plugin) {
         this.plugin = plugin;
         this.warpsFile = new File(plugin.getDataFolder(), "warps.yml");
         this.warpsCache = new HashMap<>();
@@ -121,12 +121,13 @@ public class WarpManager {
      */
     private void saveWarp(String warpName, Location location, String creatorName) {
         String warpPath = "warps." + warpName;
-        
+
         // Sauvegarder le warp
         warpsConfig.set(warpPath + ".location", location);
         // Sauvegarder creator et date pour la traçabilité
         warpsConfig.set(warpPath + ".creator", creatorName);
-        warpsConfig.set(warpPath + ".created-date", new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+        warpsConfig.set(warpPath + ".created-date",
+                new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 
         try {
             warpsConfig.save(warpsFile);

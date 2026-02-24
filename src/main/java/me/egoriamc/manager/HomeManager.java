@@ -1,6 +1,6 @@
 package me.egoriamc.manager;
 
-import me.egoriamc.EgoraIMC;
+import me.egoriamc.EgoriaMC;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,12 +16,12 @@ import java.util.*;
  */
 public class HomeManager {
 
-    private final EgoraIMC plugin;
+    private final EgoriaMC plugin;
     private final File homesFile;
     private FileConfiguration homesConfig;
     private final Map<UUID, Map<String, Location>> homesCache;
 
-    public HomeManager(EgoraIMC plugin) {
+    public HomeManager(EgoriaMC plugin) {
         this.plugin = plugin;
         this.homesFile = new File(plugin.getDataFolder(), "homes.yml");
         this.homesCache = new HashMap<>();
@@ -134,7 +134,7 @@ public class HomeManager {
         String uuidStr = uuid.toString();
         String homePath = uuidStr + "." + homeName + ".location";
         String usernamePath = uuidStr + ".username";
-        
+
         // Sauvegarder le home
         homesConfig.set(homePath, location);
         // Sauvegarder le username pour la lisibilité du fichier
