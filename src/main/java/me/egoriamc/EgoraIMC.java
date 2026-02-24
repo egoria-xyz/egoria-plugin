@@ -4,12 +4,14 @@ import me.egoriamc.command.HomeCommand;
 import me.egoriamc.command.HelpCommand;
 import me.egoriamc.command.PluginsCommand;
 import me.egoriamc.command.WarpCommand;
+import me.egoriamc.listener.ChatListener;
 import me.egoriamc.listener.PlayerEventListener;
 import me.egoriamc.listener.MentionListener;
 import me.egoriamc.manager.ConfigManager;
 import me.egoriamc.manager.HomeManager;
 import me.egoriamc.manager.MessageManager;
 import me.egoriamc.manager.WarpManager;
+import me.egoriamc.util.EmojiUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -32,6 +34,9 @@ public class EgoraIMC extends JavaPlugin {
             this.homeManager = new HomeManager(this);
             this.warpManager = new WarpManager(this);
 
+            // Charger les emojis depuis emojis.yml
+            EmojiUtil.loadEmojis(this);
+
             // Enregistrer les commandes
             getCommand("home").setExecutor(new HomeCommand(this));
             getCommand("warp").setExecutor(new WarpCommand(this));
@@ -41,6 +46,7 @@ public class EgoraIMC extends JavaPlugin {
             // Enregistrer les événements
             getServer().getPluginManager().registerEvents(new PlayerEventListener(this), this);
             getServer().getPluginManager().registerEvents(new MentionListener(this), this);
+            getServer().getPluginManager().registerEvents(new ChatListener(this), this);
 
             logInfo("&ePlugin activé avec succès !");
             logInfo("&e- Gestion des homes : &aACTIVÉE");
