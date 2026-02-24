@@ -37,7 +37,7 @@ announce:
   # {prefix} = préfixe configuré ci-dessus
   # {message} = contenu de l'annonce
   # {sender} = nom du staff qui envoie l'annonce
-  format: "{prefix} &f{message}"
+  format: "{prefix} {message}"
 
   # Séparateurs autour de l'annonce
   separator:
