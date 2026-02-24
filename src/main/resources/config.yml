@@ -20,7 +20,7 @@ mentions:
   # Activer ou désactiver les mentions
   enabled: true
   # Son joué quand quelqu'un est mentionné
-  # Sons disponibles: ENTITY_EXPERIENCE_ORB_PICKUP, BLOCK_NOTE_BLOCK_PLING, 
+  # Sons disponibles: ENTITY_EXPERIENCE_ORB_PICKUP, BLOCK_NOTE_BLOCK_PLING,
   # BLOCK_BELL_USE, ENTITY_ARROW_HIT_PLAYER, ENTITY_PLAYER_LEVELUP, etc.
   sound: "ENTITY_EXPERIENCE_ORB_PICKUP"
   # Volume du son (0.0 à 2.0)
@@ -28,3 +28,31 @@ mentions:
   # Pitch du son (0.5 à 2.0)
   pitch: 1.0
 
+# Configuration du système d'annonces (/annonce)
+announce:
+  # Préfixe de l'annonce (support des codes couleurs &)
+  prefix: "&c&l[ANNONCE]"
+
+  # Format de l'annonce
+  # {prefix} = préfixe configuré ci-dessus
+  # {message} = contenu de l'annonce
+  # {sender} = nom du staff qui envoie l'annonce
+  format: "{prefix} &f{message}"
+
+  # Séparateurs autour de l'annonce
+  separator:
+    enabled: true
+    top: "&e&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    bottom: "&e&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+  # Son joué pour tous les joueurs lors d'une annonce
+  sound:
+    enabled: true
+    # Sons recommandés:
+    # ENTITY_ENDER_DRAGON_GROWL (dramatique)
+    # BLOCK_NOTE_BLOCK_BELL (cloche)
+    # ENTITY_PLAYER_LEVELUP (niveau up)
+    # UI_TOAST_CHALLENGE_COMPLETE (succès)
+    type: "ENTITY_ENDER_DRAGON_GROWL"
+    volume: 1.0
+    pitch: 1.0

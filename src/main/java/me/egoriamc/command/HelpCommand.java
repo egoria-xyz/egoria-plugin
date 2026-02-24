@@ -58,7 +58,7 @@ public class HelpCommand implements CommandExecutor {
         }
 
         // Section Admin
-        if (player.hasPermission("egoriamc.home.admin") || player.hasPermission("egoriamc.warp.admin")) {
+        if (player.hasPermission("egoriamc.home.admin") || player.hasPermission("egoriamc.warp.admin") || player.hasPermission("egoriamc.announce")) {
             player.sendMessage(messageManager.translateColors("&c👨‍💼 ADMIN - Commandes d'administration"));
             if (player.hasPermission("egoriamc.home.admin")) {
                 player.sendMessage(messageManager.translateColors("&7  /home set <nom> &b- Créer un home personnel"));
@@ -66,6 +66,9 @@ public class HelpCommand implements CommandExecutor {
             if (player.hasPermission("egoriamc.warp.admin")) {
                 player.sendMessage(messageManager.translateColors("&7  /warp set <nom> &b- Créer un warp public"));
                 player.sendMessage(messageManager.translateColors("&7  /warp delete <nom> &b- Supprimer un warp"));
+            }
+            if (player.hasPermission("egoriamc.announce")) {
+                player.sendMessage(messageManager.translateColors("&7  /annonce <message> &b- Envoyer une annonce (Staff)"));
             }
             player.sendMessage("");
         }
