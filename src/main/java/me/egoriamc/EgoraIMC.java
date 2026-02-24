@@ -1,5 +1,6 @@
 package me.egoriamc;
 
+import me.egoriamc.command.AnnounceCommand;
 import me.egoriamc.command.HomeCommand;
 import me.egoriamc.command.HelpCommand;
 import me.egoriamc.command.PluginsCommand;
@@ -42,6 +43,7 @@ public class EgoraIMC extends JavaPlugin {
             getCommand("warp").setExecutor(new WarpCommand(this));
             getCommand("help").setExecutor(new HelpCommand(this));
             getCommand("plugins").setExecutor(new PluginsCommand());
+            getCommand("annonce").setExecutor(new AnnounceCommand(this));
 
             // Enregistrer les événements
             getServer().getPluginManager().registerEvents(new PlayerEventListener(this), this);
