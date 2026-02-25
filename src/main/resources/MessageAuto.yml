@@ -1,0 +1,43 @@
+# Configuration des messages automatiques
+# Chaque message s'affiche automatiquement à intervalles réguliers
+# - message: Le texte à afficher (accepte les codes couleur & et les emojis)
+# - cooldown: Délai en secondes avant d'afficher le message à nouveau
+
+# ======= GUIDE DES COOLDOWNS =======
+# 30      = 30 secondes
+# 60      = 1 minute
+# 120     = 2 minutes
+# 180     = 3 minutes
+# 300     = 5 minutes
+# 600     = 10 minutes
+# 900     = 15 minutes
+# 1200    = 20 minutes
+# 1800    = 30 minutes
+# 2700    = 45 minutes
+# 3600    = 1 heure
+# 5400    = 1.5 heure
+# 7200    = 2 heures
+# 10800   = 3 heures
+
+messages:
+  message1:
+    message: "&e[ANNONCE] &fBienvenue sur le serveur EgoriaMC !"
+    cooldown: 300 # 5 minutes
+
+  message2:
+    message: "&a[CONSEIL] &fUtilisez la commande &b/help &fpour voir l'aide du plugin !"
+    cooldown: 600 # 10 minutes
+
+  message3:
+    message: "&c[INFO] &fN'oubliez pas de visiter la boutique du serveur !"
+    cooldown: 900 # 15 minutes
+
+  message4:
+    message: "&b[TIP] &fVous pouvez utiliser &b/craft &fpour ouvrir une table de craft (grade Gardien) !"
+    cooldown: 1200 # 20 minutes
+
+# Mode de récurrence : "sequential" (un par un) ou "random" (aléatoire)
+mode: sequential
+
+# Intervalle global en secondes (après qu'un message soit affiché, avant d'afficher le suivant)
+global-interval: 60

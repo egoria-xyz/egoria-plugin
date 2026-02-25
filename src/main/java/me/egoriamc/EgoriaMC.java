@@ -5,6 +5,7 @@ import me.egoriamc.command.CraftCommand;
 import me.egoriamc.command.FurnaceCommand;
 import me.egoriamc.command.HomeCommand;
 import me.egoriamc.command.HelpCommand;
+import me.egoriamc.command.LiveCommand;
 import me.egoriamc.command.PluginsCommand;
 import me.egoriamc.command.WarpCommand;
 import me.egoriamc.listener.ChatListener;
@@ -12,6 +13,7 @@ import me.egoriamc.listener.HomeInventoryListener;
 import me.egoriamc.listener.PlayerEventListener;
 import me.egoriamc.listener.MentionListener;
 import me.egoriamc.listener.PluginsInventoryListener;
+import me.egoriamc.manager.AutoMessageManager;
 import me.egoriamc.manager.ConfigManager;
 import me.egoriamc.manager.HomeManager;
 import me.egoriamc.manager.MessageManager;
@@ -31,6 +33,7 @@ public class EgoriaMC extends JavaPlugin {
     private MessageManager messageManager;
     private HomeManager homeManager;
     private WarpManager warpManager;
+    private AutoMessageManager autoMessageManager;
 
     @Override
     public void onEnable() {
@@ -42,6 +45,7 @@ public class EgoriaMC extends JavaPlugin {
             this.messageManager = new MessageManager(this);
             this.homeManager = new HomeManager(this);
             this.warpManager = new WarpManager(this);
+            this.autoMessageManager = new AutoMessageManager(this);
 
             // Charger les emojis depuis emojis.yml
             EmojiUtil.loadEmojis(this);
@@ -57,6 +61,7 @@ public class EgoriaMC extends JavaPlugin {
             getCommand("annonce").setExecutor(new AnnounceCommand(this));
             getCommand("furnace").setExecutor(new FurnaceCommand(this));
             getCommand("craft").setExecutor(new CraftCommand(this));
+            getCommand("live").setExecutor(new LiveCommand(this));
 
             // Enregistrer les événements
             getServer().getPluginManager().registerEvents(new PlayerEventListener(this), this);
@@ -69,6 +74,7 @@ public class EgoriaMC extends JavaPlugin {
             logInfo("&e- Gestion des homes : &aACTIVÉE");
             logInfo("&e- Gestion des warps : &aACTIVÉE");
             logInfo("&e- Gestion des messages : &aACTIVÉE");
+            logInfo("&e- Messages automatiques : &aACTIVÉS");
             logInfo("&eUtilisez &b/help &epour voir l'aide !");
 
         } catch (Exception e) {
@@ -85,6 +91,9 @@ public class EgoriaMC extends JavaPlugin {
         }
         if (warpManager != null) {
             warpManager.saveLater();
+        }
+        if (autoMessageManager != null) {
+            autoMessageManager.stop();
         }
         logInfo("Plugin désactivé.");
     }
@@ -193,5 +202,9 @@ public class EgoriaMC extends JavaPlugin {
 
     public WarpManager getWarpManager() {
         return warpManager;
+    }
+
+    public AutoMessageManager getAutoMessageManager() {
+        return autoMessageManager;
     }
 }
