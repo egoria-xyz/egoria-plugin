@@ -67,6 +67,7 @@ public class HelpCommand implements CommandExecutor {
             player.sendMessage(messageManager.translateColors("&c  /warp set <nom> &b- Créer un warp (Admin)"));
             player.sendMessage(
                     messageManager.translateColors("&c  /warp delete <nom> &b- Supprimer un warp (Admin)"));
+            player.sendMessage("");
         }
 
         // Section Admin

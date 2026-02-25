@@ -10,6 +10,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.FurnaceRecipe;
+import org.bukkit.inventory.BlastingRecipe;
+import org.bukkit.inventory.SmokingRecipe;
+import org.bukkit.inventory.CampfireRecipe;
 import org.bukkit.inventory.RecipeChoice;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -77,18 +80,44 @@ public class FurnaceCommand implements CommandExecutor {
         var recipeIterator = plugin.getServer().recipeIterator();
         while (recipeIterator.hasNext()) {
             Recipe recipe = recipeIterator.next();
+
+            // Vérifier FurnaceRecipe (four classique)
             if (recipe instanceof FurnaceRecipe furnaceRecipe) {
-                RecipeChoice choice = furnaceRecipe.getInputChoice();
-                if (choice != null && choice.test(new ItemStack(material))) {
+                if (matchesRecipe(furnaceRecipe.getInputChoice(), furnaceRecipe.getInput(), material)) {
                     return furnaceRecipe.getResult().clone();
                 }
-                // Vérifier aussi avec material direct pour les anciennes versions
-                if (furnaceRecipe.getInput().getType() == material) {
-                    return furnaceRecipe.getResult().clone();
+            }
+            // Vérifier BlastingRecipe (fourneau de fonte - pour les minerais)
+            else if (recipe instanceof BlastingRecipe blastingRecipe) {
+                if (matchesRecipe(blastingRecipe.getInputChoice(), blastingRecipe.getInput(), material)) {
+                    return blastingRecipe.getResult().clone();
+                }
+            }
+            // Vérifier SmokingRecipe (fumoir - pour les poissons et viandes)
+            else if (recipe instanceof SmokingRecipe smokingRecipe) {
+                if (matchesRecipe(smokingRecipe.getInputChoice(), smokingRecipe.getInput(), material)) {
+                    return smokingRecipe.getResult().clone();
+                }
+            }
+            // Vérifier CampfireRecipe (feu de camp)
+            else if (recipe instanceof CampfireRecipe campfireRecipe) {
+                if (matchesRecipe(campfireRecipe.getInputChoice(), campfireRecipe.getInput(), material)) {
+                    return campfireRecipe.getResult().clone();
                 }
             }
         }
         return null;
+    }
+
+    /**
+     * Vérifie si un matériau correspond à une recette
+     */
+    private boolean matchesRecipe(RecipeChoice choice, ItemStack input, Material material) {
+        if (choice != null && choice.test(new ItemStack(material))) {
+            return true;
+        }
+        // Vérifier aussi avec material direct pour les anciennes versions
+        return input.getType() == material;
     }
 
     /**
