@@ -2,6 +2,7 @@ package me.egoriamc.manager;
 
 import me.egoriamc.util.EmojiUtil;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
@@ -73,6 +74,28 @@ public class MessageManager {
     }
 
     /**
+     * Détermine le groupe/grade du joueur basé sur ses permissions
+     */
+    public String getPlayerGroup(Player player) {
+        if (player.hasPermission("egoria.owner")) {
+            return "owner";
+        }
+        if (player.hasPermission("egoria.admin")) {
+            return "admin";
+        }
+        if (player.hasPermission("egoria.developer")) {
+            return "developer";
+        }
+        if (player.hasPermission("egoria.staff")) {
+            return "staff";
+        }
+        if (player.hasPermission("egoria.vip")) {
+            return "vip";
+        }
+        return "member";
+    }
+
+    /**
      * Enlève les codes de couleur d'un message
      */
     public String stripColors(String message) {
@@ -119,19 +142,19 @@ public class MessageManager {
     }
 
     // Messages pour les événements
-    public String getJoinMessage(String playerName) {
+    public String getJoinMessage(Player player) {
         FileConfiguration messagesConfig = getConfigManager().getMessagesConfig();
         String message = messagesConfig.getString("join.message", "");
-        message = message.replace("{player}", playerName);
-        String emoji = messagesConfig.getString("join.emoji", "member");
+        message = message.replace("{player}", player.getName());
+        String emoji = getPlayerGroup(player);
         return EmojiUtil.formatWithEmoji(emoji, translateColors(message));
     }
 
-    public String getLeaveMessage(String playerName) {
+    public String getLeaveMessage(Player player) {
         FileConfiguration messagesConfig = getConfigManager().getMessagesConfig();
         String message = messagesConfig.getString("leave.message", "");
-        message = message.replace("{player}", playerName);
-        String emoji = messagesConfig.getString("leave.emoji", "member");
+        message = message.replace("{player}", player.getName());
+        String emoji = getPlayerGroup(player);
         return EmojiUtil.formatWithEmoji(emoji, translateColors(message));
     }
 

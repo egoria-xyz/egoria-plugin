@@ -1,6 +1,7 @@
 package me.egoriamc;
 
 import me.egoriamc.command.AnnounceCommand;
+import me.egoriamc.command.FurnaceCommand;
 import me.egoriamc.command.HomeCommand;
 import me.egoriamc.command.HelpCommand;
 import me.egoriamc.command.PluginsCommand;
@@ -45,6 +46,7 @@ public class EgoriaMC extends JavaPlugin {
             getCommand("help").setExecutor(new HelpCommand(this));
             getCommand("plugins").setExecutor(new PluginsCommand());
             getCommand("annonce").setExecutor(new AnnounceCommand(this));
+            getCommand("furnace").setExecutor(new FurnaceCommand(this));
 
             // Enregistrer les événements
             getServer().getPluginManager().registerEvents(new PlayerEventListener(this), this);

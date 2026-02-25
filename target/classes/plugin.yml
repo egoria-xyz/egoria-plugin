@@ -27,6 +27,10 @@ commands:
     usage: /annonce <message>
     permission: egoriamc.announce
     aliases: [announce, broadcast]
+  furnace:
+    description: Cuit automatiquement l'item dans la main du joueur (grade Gardien)
+    usage: /furnace
+    permission: egoriamc.furnace.use
 
 permissions:
   egoriamc.help:
@@ -52,4 +56,7 @@ permissions:
     default: op
   egoriamc.announce:
     description: Permet d'envoyer des annonces à tous les joueurs
+    default: op
+  egoriamc.furnace.use:
+    description: Permet de cuire automatiquement les items (grade Gardien)
     default: op

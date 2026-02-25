@@ -25,7 +25,7 @@ public class PlayerEventListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        String message = messageManager.getJoinMessage(player.getName());
+        String message = messageManager.getJoinMessage(player);
 
         event.setJoinMessage(message);
         plugin.logInfo(message);
@@ -34,7 +34,7 @@ public class PlayerEventListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        String message = messageManager.getLeaveMessage(player.getName());
+        String message = messageManager.getLeaveMessage(player);
 
         event.setQuitMessage(message);
         plugin.logInfo(message);
