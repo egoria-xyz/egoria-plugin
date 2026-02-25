@@ -75,23 +75,27 @@ public class MessageManager {
 
     /**
      * Détermine le groupe/grade du joueur basé sur ses permissions
+     * Fonctionne avec LuckPerms via le système de permissions standard de Bukkit
      */
     public String getPlayerGroup(Player player) {
-        if (player.hasPermission("egoria.owner")) {
+        // Vérifie les permissions en ordre du plus haut au plus bas grade
+        // Ceci fonctionne car LuckPerms intègre le système de permissions Bukkit
+        if (player.hasPermission("group.owner")) {
             return "owner";
         }
-        if (player.hasPermission("egoria.admin")) {
+        if (player.hasPermission("group.admin")) {
             return "admin";
         }
-        if (player.hasPermission("egoria.developer")) {
+        if (player.hasPermission("group.developer")) {
             return "developer";
         }
-        if (player.hasPermission("egoria.staff")) {
+        if (player.hasPermission("group.staff")) {
             return "staff";
         }
-        if (player.hasPermission("egoria.vip")) {
+        if (player.hasPermission("group.vip")) {
             return "vip";
         }
+
         return "member";
     }
 
