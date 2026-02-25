@@ -32,6 +32,10 @@ commands:
     description: Cuit automatiquement l'item dans la main du joueur (grade Gardien)
     usage: /furnace
     permission: egoriamc.furnace.use
+  craft:
+    description: Ouvre une table de craft (grade Gardien)
+    usage: /craft
+    permission: egoriamc.craft.use
 
 permissions:
   egoriamc.help:
@@ -60,4 +64,7 @@ permissions:
     default: op
   egoriamc.furnace.use:
     description: Permet de cuire automatiquement les items (grade Gardien)
+    default: op
+  egoriamc.craft.use:
+    description: Permet d'ouvrir une table de craft (grade Gardien)
     default: op

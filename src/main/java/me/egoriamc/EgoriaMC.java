@@ -1,6 +1,7 @@
 package me.egoriamc;
 
 import me.egoriamc.command.AnnounceCommand;
+import me.egoriamc.command.CraftCommand;
 import me.egoriamc.command.FurnaceCommand;
 import me.egoriamc.command.HomeCommand;
 import me.egoriamc.command.HelpCommand;
@@ -10,6 +11,7 @@ import me.egoriamc.listener.ChatListener;
 import me.egoriamc.listener.HomeInventoryListener;
 import me.egoriamc.listener.PlayerEventListener;
 import me.egoriamc.listener.MentionListener;
+import me.egoriamc.listener.PluginsInventoryListener;
 import me.egoriamc.manager.ConfigManager;
 import me.egoriamc.manager.HomeManager;
 import me.egoriamc.manager.MessageManager;
@@ -54,12 +56,14 @@ public class EgoriaMC extends JavaPlugin {
             getCommand("plugins").setExecutor(new PluginsCommand());
             getCommand("annonce").setExecutor(new AnnounceCommand(this));
             getCommand("furnace").setExecutor(new FurnaceCommand(this));
+            getCommand("craft").setExecutor(new CraftCommand(this));
 
             // Enregistrer les événements
             getServer().getPluginManager().registerEvents(new PlayerEventListener(this), this);
             getServer().getPluginManager().registerEvents(new MentionListener(this), this);
             getServer().getPluginManager().registerEvents(new ChatListener(this), this);
             getServer().getPluginManager().registerEvents(new HomeInventoryListener(this), this);
+            getServer().getPluginManager().registerEvents(new PluginsInventoryListener(), this);
 
             logInfo("&ePlugin activé avec succès !");
             logInfo("&e- Gestion des homes : &aACTIVÉE");

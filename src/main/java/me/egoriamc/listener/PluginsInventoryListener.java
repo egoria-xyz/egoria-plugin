@@ -30,7 +30,11 @@ public class PluginsInventoryListener implements Listener {
             return;
         }
 
+        // Vérifier que le clic n'est pas sur un slot invalide
         int slot = event.getRawSlot();
+        if (slot < 0 || slot >= 27) {
+            return;
+        }
 
         // Gérer les clics sur les boutons de navigation
         if (slot == 25) {
