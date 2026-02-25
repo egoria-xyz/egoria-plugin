@@ -7,6 +7,7 @@ import me.egoriamc.command.HomeCommand;
 import me.egoriamc.command.HelpCommand;
 import me.egoriamc.command.LiveCommand;
 import me.egoriamc.command.PluginsCommand;
+import me.egoriamc.command.ReloadCommand;
 import me.egoriamc.command.WarpCommand;
 import me.egoriamc.listener.ChatListener;
 import me.egoriamc.listener.HomeInventoryListener;
@@ -62,6 +63,7 @@ public class EgoriaMC extends JavaPlugin {
             getCommand("furnace").setExecutor(new FurnaceCommand(this));
             getCommand("craft").setExecutor(new CraftCommand(this));
             getCommand("live").setExecutor(new LiveCommand(this));
+            getCommand("reload").setExecutor(new ReloadCommand(this));
 
             // Enregistrer les événements
             getServer().getPluginManager().registerEvents(new PlayerEventListener(this), this);

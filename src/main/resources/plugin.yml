@@ -40,6 +40,10 @@ commands:
     description: Annonce un live (grade Streamer)
     usage: /live <URL>
     permission: egoriamc.live.use
+  reload:
+    description: Recharge la configuration du plugin
+    usage: /reload
+    permission: egoriamc.reload
 
 permissions:
   egoriamc.help:
@@ -74,4 +78,7 @@ permissions:
     default: op
   egoriamc.live.use:
     description: Permet de faire des annonces de live (grade Streamer)
+    default: op
+  egoriamc.reload:
+    description: Permet de recharger la configuration du plugin
     default: op
