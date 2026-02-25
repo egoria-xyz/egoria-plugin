@@ -1,6 +1,7 @@
 name: EgoriaMC
 version: 1.0
 main: me.egoriamc.EgoriaMC
+api-version: 1.13
 authors:
   - egoriamc
 description: Plugin de gestion des homes et messages personnalisés

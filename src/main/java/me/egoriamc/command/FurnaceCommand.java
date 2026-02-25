@@ -11,6 +11,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.CookingRecipe;
 import org.bukkit.inventory.RecipeChoice;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -22,6 +24,17 @@ public class FurnaceCommand implements CommandExecutor {
 
     private final EgoriaMC plugin;
     private final MessageManager messageManager;
+
+    // Mapping direct des minerais bruts vers les produits finis
+    private static final Map<Material, Material> ORE_PRODUCTS = new HashMap<>();
+
+    static {
+        // Minerais bruts
+        ORE_PRODUCTS.put(Material.RAW_IRON, Material.IRON_INGOT);
+        ORE_PRODUCTS.put(Material.RAW_GOLD, Material.GOLD_INGOT);
+        ORE_PRODUCTS.put(Material.RAW_COPPER, Material.COPPER_INGOT);
+        ORE_PRODUCTS.put(Material.ANCIENT_DEBRIS, Material.NETHERITE_SCRAP);
+    }
 
     public FurnaceCommand(EgoriaMC plugin) {
         this.plugin = plugin;
@@ -74,21 +87,43 @@ public class FurnaceCommand implements CommandExecutor {
      * Obtient le résultat cuit d'un item
      */
     private ItemStack getCookedResult(Material material) {
+        // PREMIÈRE priorité: vérifier dans le mapping direct (minerais bruts)
+        if (ORE_PRODUCTS.containsKey(material)) {
+            Material product = ORE_PRODUCTS.get(material);
+            plugin.getLogger().info("✓ Recette trouvée (mapping) pour " + material + " -> " + product);
+            return new ItemStack(product);
+        }
+
+        // DEUXIÈME priorité: chercher dans les recettes de cuisson du serveur
         var recipeIterator = plugin.getServer().recipeIterator();
+
         while (recipeIterator.hasNext()) {
             Recipe recipe = recipeIterator.next();
 
             // Vérifier si c'est une recette de cuisson (four, fourneau, fumoir, etc.)
             if (recipe instanceof CookingRecipe cookingRecipe) {
-                // Vérifier la RecipeChoice d'abord
-                RecipeChoice choice = cookingRecipe.getInputChoice();
-                if (choice != null && choice.test(new ItemStack(material))) {
-                    return cookingRecipe.getResult().clone();
-                }
+                try {
+                    // Vérifier directement le matériau d'entrée
+                    ItemStack input = cookingRecipe.getInput();
+                    if (input != null && input.getType() == material) {
+                        plugin.getLogger().info(
+                                "✓ Recette trouvée (serveur) pour " + material + " -> "
+                                        + cookingRecipe.getResult().getType());
+                        return cookingRecipe.getResult().clone();
+                    }
 
-                // Fallback: vérifier le matériau directement
-                if (cookingRecipe.getInput().getType() == material) {
-                    return cookingRecipe.getResult().clone();
+                    // Vérifier la RecipeChoice pour les recettes avec choix multiples
+                    RecipeChoice choice = cookingRecipe.getInputChoice();
+                    if (choice != null) {
+                        ItemStack testItem = new ItemStack(material, 1);
+                        if (choice.test(testItem)) {
+                            plugin.getLogger().info("✓ Recette trouvée (RecipeChoice) pour " + material + " -> "
+                                    + cookingRecipe.getResult().getType());
+                            return cookingRecipe.getResult().clone();
+                        }
+                    }
+                } catch (Exception e) {
+                    // Ignorer les exceptions et continuer
                 }
             }
         }

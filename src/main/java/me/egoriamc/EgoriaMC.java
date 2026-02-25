@@ -16,6 +16,10 @@ import me.egoriamc.manager.MessageManager;
 import me.egoriamc.manager.WarpManager;
 import me.egoriamc.util.EmojiUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.inventory.BlastingRecipe;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class EgoriaMC extends JavaPlugin {
@@ -39,6 +43,9 @@ public class EgoriaMC extends JavaPlugin {
 
             // Charger les emojis depuis emojis.yml
             EmojiUtil.loadEmojis(this);
+
+            // Enregistrer les recettes de cuisson manquantes
+            registerCookingRecipes();
 
             // Enregistrer les commandes
             getCommand("home").setExecutor(new HomeCommand(this));
@@ -97,6 +104,71 @@ public class EgoriaMC extends JavaPlugin {
      */
     public String translateHexColorCodes(String message) {
         return message.replace("&", "§");
+    }
+
+    /**
+     * Enregistre les recettes de cuisson manquantes pour les minerais et ancient
+     * debris
+     */
+    private void registerCookingRecipes() {
+        try {
+            int count = 0;
+
+            // Recette pour RAW_IRON -> IRON_INGOT (Blast Furnace)
+            if (Material.RAW_IRON != null && Material.IRON_INGOT != null) {
+                BlastingRecipe rawIronRecipe = new BlastingRecipe(
+                        new NamespacedKey(this, "raw_iron_blasting"),
+                        new ItemStack(Material.IRON_INGOT),
+                        Material.RAW_IRON,
+                        0.7f,
+                        100);
+                getServer().addRecipe(rawIronRecipe);
+                count++;
+            }
+
+            // Recette pour RAW_GOLD -> GOLD_INGOT (Blast Furnace)
+            if (Material.RAW_GOLD != null && Material.GOLD_INGOT != null) {
+                BlastingRecipe rawGoldRecipe = new BlastingRecipe(
+                        new NamespacedKey(this, "raw_gold_blasting"),
+                        new ItemStack(Material.GOLD_INGOT),
+                        Material.RAW_GOLD,
+                        1.0f,
+                        100);
+                getServer().addRecipe(rawGoldRecipe);
+                count++;
+            }
+
+            // Recette pour RAW_COPPER -> COPPER_INGOT (Blast Furnace)
+            if (Material.RAW_COPPER != null && Material.COPPER_INGOT != null) {
+                BlastingRecipe rawCopperRecipe = new BlastingRecipe(
+                        new NamespacedKey(this, "raw_copper_blasting"),
+                        new ItemStack(Material.COPPER_INGOT),
+                        Material.RAW_COPPER,
+                        0.7f,
+                        100);
+                getServer().addRecipe(rawCopperRecipe);
+                count++;
+            }
+
+            // Recette pour ANCIENT_DEBRIS -> NETHERITE_SCRAP (Blast Furnace)
+            if (Material.ANCIENT_DEBRIS != null && Material.NETHERITE_SCRAP != null) {
+                BlastingRecipe ancientDebrisRecipe = new BlastingRecipe(
+                        new NamespacedKey(this, "ancient_debris_blasting"),
+                        new ItemStack(Material.NETHERITE_SCRAP),
+                        Material.ANCIENT_DEBRIS,
+                        2.0f,
+                        100);
+                getServer().addRecipe(ancientDebrisRecipe);
+                count++;
+            }
+
+            if (count > 0) {
+                logInfo("&a✓ " + count + " recettes de cuisson ont été enregistrées");
+            }
+        } catch (Exception e) {
+            logError("Erreur lors de l'enregistrement des recettes de cuisson");
+            e.printStackTrace();
+        }
     }
 
     public static EgoriaMC getInstance() {

@@ -46,6 +46,13 @@ public class HelpCommand implements CommandExecutor {
             player.sendMessage("");
         }
 
+        // Section Furnace
+        if (player.hasPermission("egoriamc.furnace.use")) {
+            player.sendMessage(messageManager.translateColors("&a🔥 FURNACE - Cuisson rapide"));
+            player.sendMessage(messageManager.translateColors("&7  /furnace &b- Cuit automatiquement l'item en main"));
+            player.sendMessage("");
+        }
+
         // Section Warps
         if (player.hasPermission("egoriamc.warp.use")) {
             player.sendMessage(messageManager.translateColors("&a🌍 WARPS - Points de téléportation publics"));
@@ -62,7 +69,6 @@ public class HelpCommand implements CommandExecutor {
             player.sendMessage(
                     messageManager.translateColors("&7  /home staffhomes <joueur> &b- Voir les homes d'un joueur"));
             player.sendMessage(messageManager.translateColors("&7                           &8(alias: &f/home sh&8)"));
-            player.sendMessage("");
             // Section Warps Admin
             player.sendMessage(messageManager.translateColors("&c  /warp set <nom> &b- Créer un warp (Admin)"));
             player.sendMessage(
