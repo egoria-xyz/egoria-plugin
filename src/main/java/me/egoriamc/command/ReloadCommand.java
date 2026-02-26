@@ -38,6 +38,10 @@ public class ReloadCommand implements CommandExecutor {
             plugin.getAutoMessageManager().reloadConfig();
             sender.sendMessage(messageManager.translateColors("&a✓ Messages automatiques rechargés"));
 
+            // Recharger la config des spawns
+            plugin.getSpawnConfigManager().loadConfig();
+            sender.sendMessage(messageManager.translateColors("&a✓ Configuration des spawns rechargée"));
+
             sender.sendMessage(
                     messageManager.translateColors("&a✓ Toutes les configurations ont été rechargées avec succès !"));
         } catch (Exception e) {

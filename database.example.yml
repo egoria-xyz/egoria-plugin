@@ -1,0 +1,9 @@
+# Exemple de configuration BDD pour les warns
+# Copiez ce fichier vers : plugins/EgoriaMC/database.yml
+# Puis remplacez les valeurs (ce fichier ne doit pas contenir les vrais identifiants sur Git).
+
+host: "192.168.1.200"
+port: 3306
+user: "egoriamc"
+password: "VOTRE_MOT_DE_PASSE"
+database: "egoriamc"

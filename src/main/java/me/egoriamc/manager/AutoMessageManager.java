@@ -98,7 +98,14 @@ public class AutoMessageManager {
             return;
         }
 
-        String message = messageSection.getString("message", "");
+        String message;
+        if (messageSection.isList("message")) {
+            // message est une liste de lignes (YAML avec - "ligne1", - "ligne2", ...)
+            List<String> lines = messageSection.getStringList("message");
+            message = String.join("", lines);
+        } else {
+            message = messageSection.getString("message", "");
+        }
         long cooldown = messageSection.getLong("cooldown", 0);
 
         // Vérifier le cooldown

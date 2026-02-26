@@ -8,14 +8,19 @@ import me.egoriamc.command.HelpCommand;
 import me.egoriamc.command.LiveCommand;
 import me.egoriamc.command.PluginsCommand;
 import me.egoriamc.command.ReloadCommand;
+import me.egoriamc.command.WarnCommand;
 import me.egoriamc.command.WarpCommand;
 import me.egoriamc.listener.ChatListener;
+import me.egoriamc.listener.CreatureSpawnListener;
 import me.egoriamc.listener.HomeInventoryListener;
 import me.egoriamc.listener.PlayerEventListener;
 import me.egoriamc.listener.MentionListener;
 import me.egoriamc.listener.PluginsInventoryListener;
 import me.egoriamc.manager.AutoMessageManager;
 import me.egoriamc.manager.ConfigManager;
+import me.egoriamc.manager.DatabaseManager;
+import me.egoriamc.manager.SpawnConfigManager;
+import me.egoriamc.manager.WarnManager;
 import me.egoriamc.manager.HomeManager;
 import me.egoriamc.manager.MessageManager;
 import me.egoriamc.manager.WarpManager;
@@ -35,6 +40,9 @@ public class EgoriaMC extends JavaPlugin {
     private HomeManager homeManager;
     private WarpManager warpManager;
     private AutoMessageManager autoMessageManager;
+    private SpawnConfigManager spawnConfigManager;
+    private DatabaseManager databaseManager;
+    private WarnManager warnManager;
 
     @Override
     public void onEnable() {
@@ -47,6 +55,9 @@ public class EgoriaMC extends JavaPlugin {
             this.homeManager = new HomeManager(this);
             this.warpManager = new WarpManager(this);
             this.autoMessageManager = new AutoMessageManager(this);
+            this.spawnConfigManager = new SpawnConfigManager(this);
+            this.databaseManager = new DatabaseManager(this);
+            this.warnManager = new WarnManager(this);
 
             // Charger les emojis depuis emojis.yml
             EmojiUtil.loadEmojis(this);
@@ -64,6 +75,7 @@ public class EgoriaMC extends JavaPlugin {
             getCommand("craft").setExecutor(new CraftCommand(this));
             getCommand("live").setExecutor(new LiveCommand(this));
             getCommand("reload").setExecutor(new ReloadCommand(this));
+            getCommand("warn").setExecutor(new WarnCommand(this));
 
             // Enregistrer les événements
             getServer().getPluginManager().registerEvents(new PlayerEventListener(this), this);
@@ -71,12 +83,15 @@ public class EgoriaMC extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new ChatListener(this), this);
             getServer().getPluginManager().registerEvents(new HomeInventoryListener(this), this);
             getServer().getPluginManager().registerEvents(new PluginsInventoryListener(), this);
+            getServer().getPluginManager().registerEvents(new CreatureSpawnListener(this), this);
 
             logInfo("&ePlugin activé avec succès !");
             logInfo("&e- Gestion des homes : &aACTIVÉE");
             logInfo("&e- Gestion des warps : &aACTIVÉE");
             logInfo("&e- Gestion des messages : &aACTIVÉE");
             logInfo("&e- Messages automatiques : &aACTIVÉS");
+            logInfo("&e- Taux de spawn (spawn.yml) : &aACTIVÉ");
+            logInfo("&e- Warns (BDD) : " + (databaseManager.isConfigured() ? "&aACTIVÉ" : "&7désactivé (database.yml)"));
             logInfo("&eUtilisez &b/help &epour voir l'aide !");
 
         } catch (Exception e) {
@@ -96,6 +111,9 @@ public class EgoriaMC extends JavaPlugin {
         }
         if (autoMessageManager != null) {
             autoMessageManager.stop();
+        }
+        if (databaseManager != null) {
+            databaseManager.shutdown();
         }
         logInfo("Plugin désactivé.");
     }
@@ -208,5 +226,17 @@ public class EgoriaMC extends JavaPlugin {
 
     public AutoMessageManager getAutoMessageManager() {
         return autoMessageManager;
+    }
+
+    public SpawnConfigManager getSpawnConfigManager() {
+        return spawnConfigManager;
+    }
+
+    public DatabaseManager getDatabaseManager() {
+        return databaseManager;
+    }
+
+    public WarnManager getWarnManager() {
+        return warnManager;
     }
 }

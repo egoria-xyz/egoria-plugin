@@ -1,0 +1,14 @@
+# Configuration BDD - Copié en database.yml au premier lancement.
+# Modifiez database.yml dans le dossier du plugin (ne pas pousser sur Git).
+#
+# host     : IP ou hostname du serveur MySQL
+# port     : Port MySQL (3306 par défaut)
+# user     : Utilisateur MySQL
+# password : Mot de passe
+# database : Nom de la base
+
+host: "0.0.0.0"
+port: 3306
+user: "user"
+password: "CHANGE_ME"
+database: "egoriamc"

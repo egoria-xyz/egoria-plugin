@@ -44,6 +44,10 @@ commands:
     description: Recharge la configuration du plugin
     usage: /reload
     permission: egoriamc.reload
+  warn:
+    description: Donne un avertissement à un joueur (enregistré en BDD)
+    usage: /warn <pseudo> <raison>
+    permission: egoriamc.warn
 
 permissions:
   egoriamc.help:
@@ -81,4 +85,7 @@ permissions:
     default: op
   egoriamc.reload:
     description: Permet de recharger la configuration du plugin
+    default: op
+  egoriamc.warn:
+    description: Permet d'avertir un joueur (warn en BDD)
     default: op

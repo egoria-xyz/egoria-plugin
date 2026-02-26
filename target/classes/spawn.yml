@@ -1,0 +1,34 @@
+# Configuration des taux de spawn des créatures
+# Permet de baisser, augmenter ou booster le spawn des animaux et mobs
+#
+# - enabled: Activer/désactiver le système (true/false)
+# - default: Multiplicateur par défaut (1.0 = normal)
+# - categories: Multiplicateur par catégorie
+# - entities: Override par type d'entité (optionnel)
+#
+# Multiplicateur :
+#   1.0 = taux normal
+#   0.5 = moitié moins de spawns (ex: 50% des spawns annulés)
+#   0.0 = aucun spawn (désactiver une catégorie)
+#   1.5 = 50% de chance de spawn supplémentaire à chaque spawn
+#   2.0 = double (chaque spawn a 100% de chance d'en générer un 2e)
+#
+# Seuls les spawns NATURELS sont modifiés (pas les œufs, spawners, etc.)
+
+enabled: true
+default: 1.0
+
+# Par catégorie
+categories:
+  animals: 1.0      # Vaches, cochons, moutons, poules, lapins, renards...
+  monsters: 1.0     # Zombies, squelettes, creepers, endermen...
+  water_animals: 1.0   # Poules, calmars, dauphins...
+  ambient: 1.0      # Chauves-souris
+  water_ambient: 1.0   # Poissons tropicaux, poissons-globes...
+
+# Override par type d'entité (optionnel, prioritaire sur la catégorie)
+# Décommentez et modifiez pour ajuster un mob précis
+# entities:
+#   ZOMBIE: 0.5
+#   SKELETON: 1.5
+#   COW: 2.0
