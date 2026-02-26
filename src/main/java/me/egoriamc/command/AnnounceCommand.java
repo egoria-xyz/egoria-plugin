@@ -65,6 +65,9 @@ public class AnnounceCommand implements CommandExecutor {
                 .replace("{message}", messageManager.translateColors(message))
                 .replace("{sender}", sender.getName());
 
+        // Traduire les codes couleurs du format
+        formattedMessage = messageManager.translateColors(formattedMessage);
+
         // Diffuser l'annonce
         if (showSeparator) {
             Bukkit.broadcastMessage(messageManager.translateColors(separatorTop));
