@@ -119,7 +119,7 @@ public class PluginsCommand implements CommandExecutor {
 
         List<String> lore = new ArrayList<>();
         lore.add("§7Cliquez pour aller à la page " + page);
-        lore.add("§7Commande: §f/plugins " + page);
+        lore.add("§7Commande: §f/egoriamc:plugins " + page);
         meta.setLore(lore);
 
         item.setItemMeta(meta);
