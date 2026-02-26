@@ -80,7 +80,7 @@ public class EgoriaMC extends JavaPlugin {
             // Enregistrer les événements
             getServer().getPluginManager().registerEvents(new PlayerEventListener(this), this);
             getServer().getPluginManager().registerEvents(new MentionListener(this), this);
-            getServer().getPluginManager().registerEvents(new ChatListener(this), this);
+            getServer().getPluginManager().registerEvents(new ChatListener(), this);
             getServer().getPluginManager().registerEvents(new HomeInventoryListener(this), this);
             getServer().getPluginManager().registerEvents(new PluginsInventoryListener(), this);
             getServer().getPluginManager().registerEvents(new CreatureSpawnListener(this), this);
@@ -91,7 +91,8 @@ public class EgoriaMC extends JavaPlugin {
             logInfo("&e- Gestion des messages : &aACTIVÉE");
             logInfo("&e- Messages automatiques : &aACTIVÉS");
             logInfo("&e- Taux de spawn (spawn.yml) : &aACTIVÉ");
-            logInfo("&e- Warns (BDD) : " + (databaseManager.isConfigured() ? "&aACTIVÉ" : "&7désactivé (database.yml)"));
+            logInfo("&e- Warns (BDD) : "
+                    + (databaseManager.isConfigured() ? "&aACTIVÉ" : "&7désactivé (database.yml)"));
             logInfo("&eUtilisez &b/help &epour voir l'aide !");
 
         } catch (Exception e) {

@@ -12,11 +12,9 @@ import org.bukkit.entity.Player;
  */
 public class HelpCommand implements CommandExecutor {
 
-    private final EgoriaMC plugin;
     private final MessageManager messageManager;
 
     public HelpCommand(EgoriaMC plugin) {
-        this.plugin = plugin;
         this.messageManager = plugin.getMessageManager();
     }
 

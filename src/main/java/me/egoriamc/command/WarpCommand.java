@@ -168,16 +168,4 @@ public class WarpCommand implements CommandExecutor {
         plugin.logInfo(
                 messageManager.translateColors("&a" + player.getName() + " &es'est téléporté au warp: &b" + warpName));
     }
-
-    private void sendUsage(Player player) {
-        player.sendMessage(messageManager.translateColors("&e=== Commandes Warps ==="));
-        player.sendMessage(messageManager.translateColors("&a/warp <nom> &7- Téléporter à un warp"));
-        player.sendMessage(messageManager.translateColors("&a/warp list &7- Lister les warps"));
-        player.sendMessage(messageManager.translateColors("&a/warp info <nom> &7- Info sur un warp"));
-
-        if (player.hasPermission("egoriamc.warp.admin")) {
-            player.sendMessage(messageManager.translateColors("&a/warp set <nom> &7- Créer un warp (Admin)"));
-            player.sendMessage(messageManager.translateColors("&a/warp delete <nom> &7- Supprimer un warp (Admin)"));
-        }
-    }
 }

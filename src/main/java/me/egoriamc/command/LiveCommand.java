@@ -14,11 +14,9 @@ import org.bukkit.entity.Player;
  */
 public class LiveCommand implements CommandExecutor {
 
-    private final EgoriaMC plugin;
     private final MessageManager messageManager;
 
     public LiveCommand(EgoriaMC plugin) {
-        this.plugin = plugin;
         this.messageManager = plugin.getMessageManager();
     }
 

@@ -21,8 +21,7 @@ public class SpawnConfigManager {
             EntityType.PANDA, EntityType.BEE, EntityType.GOAT, EntityType.FROG,
             EntityType.CAMEL, EntityType.SNIFFER, EntityType.OCELOT, EntityType.PARROT,
             EntityType.TURTLE, EntityType.POLAR_BEAR, EntityType.TRADER_LLAMA,
-            EntityType.AXOLOTL, EntityType.MOOSHROOM
-    );
+            EntityType.AXOLOTL, EntityType.MOOSHROOM);
 
     private static final Set<EntityType> MONSTERS = EnumSet.of(
             EntityType.ZOMBIE, EntityType.SKELETON, EntityType.CREEPER, EntityType.ENDERMAN,
@@ -32,20 +31,16 @@ public class SpawnConfigManager {
             EntityType.DROWNED, EntityType.STRAY, EntityType.HUSK, EntityType.VEX,
             EntityType.EVOKER, EntityType.VINDICATOR, EntityType.PILLAGER,
             EntityType.RAVAGER, EntityType.WARDEN, EntityType.ENDERMITE,
-            EntityType.SILVERFISH, EntityType.ZOGLIN, EntityType.PIGLIN_BRUTE
-    );
+            EntityType.SILVERFISH, EntityType.ZOGLIN, EntityType.PIGLIN_BRUTE);
 
     private static final Set<EntityType> WATER_ANIMALS = EnumSet.of(
-            EntityType.SQUID, EntityType.DOLPHIN, EntityType.GLOW_SQUID
-    );
+            EntityType.SQUID, EntityType.DOLPHIN, EntityType.GLOW_SQUID);
 
     private static final Set<EntityType> AMBIENT = EnumSet.of(
-            EntityType.BAT
-    );
+            EntityType.BAT);
 
     private static final Set<EntityType> WATER_AMBIENT = EnumSet.of(
-            EntityType.TROPICAL_FISH, EntityType.PUFFERFISH, EntityType.COD, EntityType.SALMON
-    );
+            EntityType.TROPICAL_FISH, EntityType.PUFFERFISH, EntityType.COD, EntityType.SALMON);
 
     private final EgoriaMC plugin;
     private FileConfiguration spawnConfig;
@@ -86,11 +81,16 @@ public class SpawnConfigManager {
     }
 
     private String getCategory(EntityType type) {
-        if (ANIMALS.contains(type)) return "animals";
-        if (MONSTERS.contains(type)) return "monsters";
-        if (WATER_ANIMALS.contains(type)) return "water_animals";
-        if (AMBIENT.contains(type)) return "ambient";
-        if (WATER_AMBIENT.contains(type)) return "water_ambient";
+        if (ANIMALS.contains(type))
+            return "animals";
+        if (MONSTERS.contains(type))
+            return "monsters";
+        if (WATER_ANIMALS.contains(type))
+            return "water_animals";
+        if (AMBIENT.contains(type))
+            return "ambient";
+        if (WATER_AMBIENT.contains(type))
+            return "water_ambient";
         return null;
     }
 

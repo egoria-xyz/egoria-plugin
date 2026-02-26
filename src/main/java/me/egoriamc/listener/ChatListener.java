@@ -1,6 +1,5 @@
 package me.egoriamc.listener;
 
-import me.egoriamc.EgoriaMC;
 import me.egoriamc.util.EmojiUtil;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -12,10 +11,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
  */
 public class ChatListener implements Listener {
 
-    private final EgoriaMC plugin;
-
-    public ChatListener(EgoriaMC plugin) {
-        this.plugin = plugin;
+    public ChatListener() {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

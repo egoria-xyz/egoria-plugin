@@ -5,7 +5,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * Gestionnaire de configuration
@@ -68,7 +67,7 @@ public class ConfigManager {
      * Retourne la liste de tous les types d'emojis disponibles
      */
     public String[] getAvailableEmojis() {
-        return new String[]{"owner", "admin", "developer", "staff", "vip", "member"};
+        return new String[] { "owner", "admin", "developer", "streamer", "gardien", "member" };
     }
 
     /**

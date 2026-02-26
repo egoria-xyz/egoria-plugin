@@ -13,11 +13,9 @@ import org.bukkit.entity.Player;
  */
 public class CraftCommand implements CommandExecutor {
 
-    private final EgoriaMC plugin;
     private final MessageManager messageManager;
 
     public CraftCommand(EgoriaMC plugin) {
-        this.plugin = plugin;
         this.messageManager = plugin.getMessageManager();
     }
 

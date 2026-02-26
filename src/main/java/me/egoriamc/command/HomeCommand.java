@@ -123,23 +123,6 @@ public class HomeCommand implements CommandExecutor {
         }
     }
 
-    private void handleList(Player player) {
-        Map<String, Location> homes = homeManager.getPlayerHomes(player.getUniqueId());
-
-        if (homes.isEmpty()) {
-            player.sendMessage(messageManager.getHomeListEmpty());
-            return;
-        }
-
-        player.sendMessage(messageManager.getHomeListHeader());
-        for (Map.Entry<String, Location> entry : homes.entrySet()) {
-            String homeName = entry.getKey();
-            Location loc = entry.getValue();
-            String world = loc.getWorld() != null ? loc.getWorld().getName() : "Inconnue";
-            player.sendMessage(messageManager.getHomeListItem(homeName, world));
-        }
-    }
-
     private void handleTeleport(Player player, String[] args) {
         if (args.length < 2) {
             player.sendMessage(messageManager.translateColors("₾ → &7Utilisation: /home tp <nom>"));
