@@ -6,7 +6,7 @@
 
     <groupId>me.egoriamc</groupId>
     <artifactId>egoriamc-plugin</artifactId>
-    <version>1.6</version>
+    <version>1.7</version>
 
     <name>EgoriaMC</name>
     <description>Plugin de gestion des homes et messages</description>
