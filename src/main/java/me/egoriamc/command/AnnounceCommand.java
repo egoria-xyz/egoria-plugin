@@ -59,14 +59,12 @@ public class AnnounceCommand implements CommandExecutor {
         String separatorBottom = config.getString("announce.separator.bottom",
                 "&e&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
 
-        // Formatter le message
-        String formattedMessage = format
+        // Formatter le message (traduire d'abord le format, puis remplacer les
+        // variables)
+        String formattedMessage = messageManager.translateColors(format)
                 .replace("{prefix}", messageManager.translateColors(prefix))
                 .replace("{message}", messageManager.translateColors(message))
                 .replace("{sender}", sender.getName());
-
-        // Traduire les codes couleurs du format
-        formattedMessage = messageManager.translateColors(formattedMessage);
 
         // Diffuser l'annonce
         if (showSeparator) {

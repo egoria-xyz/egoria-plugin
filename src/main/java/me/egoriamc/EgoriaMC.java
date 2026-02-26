@@ -1,6 +1,7 @@
 package me.egoriamc;
 
 import me.egoriamc.command.AnnounceCommand;
+import me.egoriamc.command.BackpackCommand;
 import me.egoriamc.command.CraftCommand;
 import me.egoriamc.command.FurnaceCommand;
 import me.egoriamc.command.HomeCommand;
@@ -8,8 +9,11 @@ import me.egoriamc.command.HelpCommand;
 import me.egoriamc.command.LiveCommand;
 import me.egoriamc.command.PluginsCommand;
 import me.egoriamc.command.ReloadCommand;
+import me.egoriamc.command.Vote2SleepCommand;
 import me.egoriamc.command.WarnCommand;
 import me.egoriamc.command.WarpCommand;
+import me.egoriamc.listener.BackpackInventoryListener;
+import me.egoriamc.listener.BackpackSaveListener;
 import me.egoriamc.listener.ChatListener;
 import me.egoriamc.listener.CreatureSpawnListener;
 import me.egoriamc.listener.HomeInventoryListener;
@@ -17,6 +21,8 @@ import me.egoriamc.listener.PlayerEventListener;
 import me.egoriamc.listener.MentionListener;
 import me.egoriamc.listener.PluginsInventoryListener;
 import me.egoriamc.manager.AutoMessageManager;
+import me.egoriamc.manager.BackpackInventoryManager;
+import me.egoriamc.manager.BackpackManager;
 import me.egoriamc.manager.ConfigManager;
 import me.egoriamc.manager.DatabaseManager;
 import me.egoriamc.manager.SpawnConfigManager;
@@ -43,6 +49,8 @@ public class EgoriaMC extends JavaPlugin {
     private SpawnConfigManager spawnConfigManager;
     private DatabaseManager databaseManager;
     private WarnManager warnManager;
+    private BackpackManager backpackManager;
+    private BackpackInventoryManager backpackInventoryManager;
 
     @Override
     public void onEnable() {
@@ -58,6 +66,8 @@ public class EgoriaMC extends JavaPlugin {
             this.spawnConfigManager = new SpawnConfigManager(this);
             this.databaseManager = new DatabaseManager(this);
             this.warnManager = new WarnManager(this);
+            this.backpackManager = new BackpackManager(this);
+            this.backpackInventoryManager = new BackpackInventoryManager(this);
 
             // Charger les emojis depuis emojis.yml
             EmojiUtil.loadEmojis(this);
@@ -76,6 +86,8 @@ public class EgoriaMC extends JavaPlugin {
             getCommand("live").setExecutor(new LiveCommand(this));
             getCommand("reload").setExecutor(new ReloadCommand(this));
             getCommand("warn").setExecutor(new WarnCommand(this));
+            getCommand("vote2sleep").setExecutor(new Vote2SleepCommand(this));
+            getCommand("backpack").setExecutor(new BackpackCommand(this));
 
             // Enregistrer les événements
             getServer().getPluginManager().registerEvents(new PlayerEventListener(this), this);
@@ -83,6 +95,8 @@ public class EgoriaMC extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new ChatListener(), this);
             getServer().getPluginManager().registerEvents(new HomeInventoryListener(this), this);
             getServer().getPluginManager().registerEvents(new PluginsInventoryListener(), this);
+            getServer().getPluginManager().registerEvents(new BackpackInventoryListener(this), this);
+            getServer().getPluginManager().registerEvents(new BackpackSaveListener(this), this);
             getServer().getPluginManager().registerEvents(new CreatureSpawnListener(this), this);
 
             logInfo("&ePlugin activé avec succès !");
@@ -239,5 +253,13 @@ public class EgoriaMC extends JavaPlugin {
 
     public WarnManager getWarnManager() {
         return warnManager;
+    }
+
+    public BackpackManager getBackpackManager() {
+        return backpackManager;
+    }
+
+    public BackpackInventoryManager getBackpackInventoryManager() {
+        return backpackInventoryManager;
     }
 }

@@ -48,6 +48,14 @@ commands:
     description: Donne un avertissement à un joueur (enregistré en BDD)
     usage: /warn <pseudo> <raison>
     permission: egoriamc.warn
+  vote2sleep:
+    description: Vote pour passer la nuit
+    usage: /vote2sleep
+    permission: egoriamc.vote2sleep
+  backpack:
+    description: Ouvre votre backpack personnel
+    usage: /backpack
+    permission: egoriamc.backpack.use
 
 permissions:
   egoriamc.help:
@@ -89,3 +97,9 @@ permissions:
   egoriamc.warn:
     description: Permet d'avertir un joueur (warn en BDD)
     default: op
+  egoriamc.vote2sleep:
+    description: Permet de voter pour passer la nuit
+    default: true
+  egoriamc.backpack.use:
+    description: Permet d'utiliser le backpack
+    default: true

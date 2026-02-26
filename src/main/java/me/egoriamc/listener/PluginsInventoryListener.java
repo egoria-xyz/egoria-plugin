@@ -1,5 +1,7 @@
 package me.egoriamc.listener;
 
+import me.egoriamc.command.PluginsCommand;
+import me.egoriamc.manager.PluginsPageManager;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -7,6 +9,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.Inventory;
 
 /**
  * Listener pour les interactions avec l'inventaire des plugins
@@ -38,10 +42,10 @@ public class PluginsInventoryListener implements Listener {
         // Gérer les clics sur les boutons de navigation
         if (slot == 25) {
             // Bouton Page Précédente
-            handlePreviousPageClick(player, event.getView().getTitle());
+            handlePreviousPageClick(player);
         } else if (slot == 26) {
             // Bouton Prochaine Page
-            handleNextPageClick(player, event.getView().getTitle());
+            handleNextPageClick(player);
         }
         // Les items de plugins ne font rien, juste l'affichage
     }
@@ -49,13 +53,18 @@ public class PluginsInventoryListener implements Listener {
     /**
      * Gère le clic sur le bouton Page Précédente
      */
-    private void handlePreviousPageClick(Player player, String title) {
-        int currentPage = extractPageNumber(title);
+    private void handlePreviousPageClick(Player player) {
+        int currentPage = PluginsPageManager.getPlayerPage(player.getUniqueId());
         if (currentPage > 1) {
             // Ajouter un feedback sonore
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
-            // Exécuter la commande pour aller à la page précédente
-            player.performCommand("plugins " + (currentPage - 1));
+
+            // Mettre à jour directement l'inventaire
+            int newPage = currentPage - 1;
+            PluginsPageManager.setPlayerPage(player.getUniqueId(), newPage);
+
+            Inventory newInventory = PluginsCommand.createPluginsInventory(newPage);
+            player.openInventory(newInventory);
         } else {
             // Son d'erreur si on est déjà à la première page
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 0.5f);
@@ -65,25 +74,34 @@ public class PluginsInventoryListener implements Listener {
     /**
      * Gère le clic sur le bouton Prochaine Page
      */
-    private void handleNextPageClick(Player player, String title) {
-        String[] parts = title.split("/");
-        if (parts.length >= 2) {
-            try {
-                int totalPages = Integer.parseInt(parts[1].replaceAll("[^0-9]", ""));
-                int currentPage = extractPageNumber(title);
-                if (currentPage < totalPages) {
-                    // Ajouter un feedback sonore
-                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
-                    // Exécuter la commande pour aller à la page suivante
-                    player.performCommand("plugins " + (currentPage + 1));
-                } else {
-                    // Son d'erreur si on est déjà à la dernière page
-                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 0.5f);
-                }
-            } catch (NumberFormatException ignored) {
-                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 0.5f);
-            }
+    private void handleNextPageClick(Player player) {
+        int currentPage = PluginsPageManager.getPlayerPage(player.getUniqueId());
+
+        // Calculer le nombre total de pages
+        int totalPages = getTotalPages();
+
+        if (currentPage < totalPages) {
+            // Ajouter un feedback sonore
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
+
+            // Mettre à jour directement l'inventaire
+            int newPage = currentPage + 1;
+            PluginsPageManager.setPlayerPage(player.getUniqueId(), newPage);
+
+            Inventory newInventory = PluginsCommand.createPluginsInventory(newPage);
+            player.openInventory(newInventory);
+        } else {
+            // Son d'erreur si on est déjà à la dernière page
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 0.5f);
         }
+    }
+
+    /**
+     * Calcule le nombre total de pages
+     */
+    private int getTotalPages() {
+        int totalPlugins = org.bukkit.Bukkit.getPluginManager().getPlugins().length;
+        return Math.max(1, (int) Math.ceil((double) totalPlugins / 25.0));
     }
 
     @EventHandler
@@ -115,18 +133,9 @@ public class PluginsInventoryListener implements Listener {
         return title != null && title.contains(PLUGINS_INVENTORY_TITLE);
     }
 
-    /**
-     * Extrait le numéro de page du titre de l'inventaire
-     */
-    private int extractPageNumber(String title) {
-        try {
-            String[] parts = title.split("/");
-            if (parts.length >= 1) {
-                String pagePart = parts[0];
-                return Integer.parseInt(pagePart.replaceAll("[^0-9]", ""));
-            }
-        } catch (NumberFormatException ignored) {
-        }
-        return 1;
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        // Nettoyer les données de pagination quand un joueur quitte
+        PluginsPageManager.cleanupPlayer(event.getPlayer().getUniqueId());
     }
 }

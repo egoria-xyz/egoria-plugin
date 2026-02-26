@@ -56,3 +56,23 @@ announce:
     type: "ENTITY_ENDER_DRAGON_GROWL"
     volume: 1.0
     pitch: 1.0
+
+# Configuration du système vote2sleep (/vote2sleep)
+vote2sleep:
+  # Pourcentage de joueurs qui doivent voter pour passer la nuit (0.0 à 1.0)
+  # 0.5 = 50% des joueurs
+  required-percentage: 0.5
+  # Cooldown en secondes entre chaque vote2sleep réussi par monde
+  cooldown: 60
+
+# Configuration du système de backpack (/backpack)
+backpack:
+  # Prix de base pour déverrouiller le premier slot
+  base-price: 100
+  # Facteur exponentiel pour l'augmentation du prix
+  # Prix = base-price * (factor ^ slot)
+  exponential-factor: 1.5
+  # Nombre de lignes pour les joueurs normaux (1 ligne = 9 slots)
+  normal-lines: 1
+  # Nombre de lignes pour les streamers (groupe streamer)
+  streamer-lines: 2

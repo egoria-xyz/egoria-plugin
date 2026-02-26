@@ -1,5 +1,6 @@
 package me.egoriamc.command;
 
+import me.egoriamc.manager.PluginsPageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -38,8 +39,8 @@ public class PluginsCommand implements CommandExecutor {
             return true;
         }
 
-        // Récupérer la page demandée (par défaut 1)
-        int page = 1;
+        // Récupérer la page demandée (par défaut la page sauvegardée du joueur)
+        int page = PluginsPageManager.getPlayerPage(player.getUniqueId());
         if (args.length > 0) {
             try {
                 page = Integer.parseInt(args[0]);
@@ -51,17 +52,18 @@ public class PluginsCommand implements CommandExecutor {
             }
         }
 
-        // Créer l'inventaire
-        Inventory inventory = createPluginsInventory(player, page);
+        // Sauvegarder la page et créer l'inventaire
+        PluginsPageManager.setPlayerPage(player.getUniqueId(), page);
+        Inventory inventory = createPluginsInventory(page);
         player.openInventory(inventory);
 
         return true;
     }
 
     /**
-     * Crée l'inventaire avec la liste des plugins
+     * Crée l'inventaire avec la liste des plugins (méthode publique)
      */
-    private Inventory createPluginsInventory(Player player, int page) {
+    public static Inventory createPluginsInventory(int page) {
         // Récupérer tous les plugins
         Plugin[] allPlugins = Bukkit.getPluginManager().getPlugins();
 
@@ -107,7 +109,7 @@ public class PluginsCommand implements CommandExecutor {
     /**
      * Crée un bouton de navigation
      */
-    private ItemStack createNavigationButton(String displayName, int page) {
+    private static ItemStack createNavigationButton(String displayName, int page) {
         ItemStack item = new ItemStack(Material.ARROW);
         ItemMeta meta = item.getItemMeta();
 
@@ -129,7 +131,7 @@ public class PluginsCommand implements CommandExecutor {
     /**
      * Crée un item (livre) pour un plugin
      */
-    private ItemStack createPluginItem(Plugin plugin) {
+    private static ItemStack createPluginItem(Plugin plugin) {
         // Utiliser un livre comme item
         ItemStack item = new ItemStack(Material.BOOK);
         ItemMeta meta = item.getItemMeta();

@@ -51,3 +51,22 @@ announce:
   no-permission: "&cVous n'avez pas la permission d'envoyer des annonces."
   usage: "&cUtilisation: &e/annonce <message>"
   sent: "&aVotre annonce a été envoyée avec succès !"
+
+# Messages du vote2sleep
+vote2sleep:
+  must-be-player: "&cSeuls les joueurs peuvent voter pour passer la nuit."
+  not-night: "&cVous ne pouvez voter que la nuit."
+  already-voted: "&cVous avez déjà voté pour passer la nuit."
+  cooldown: "&cLe vote pour la nuit est en cooldown pour &e{0}&c secondes."
+  vote-added: "&aVotre vote a été ajouté ! &7({0}&7/&e{1}&7)"
+  vote-broadcast: "&e{0} &aa voté pour passer la nuit ! &7({1}&7/&e{2}&7)"
+  night-skipped: "&6✓ &aLa nuit a été passée par le vote ! Bonne journée !"
+
+# Messages du backpack
+backpack:
+  must-be-player: "&cSeuls les joueurs peuvent utiliser le backpack."
+  no-permission: "&cVous n'avez pas la permission d'utiliser le backpack."
+  vault-not-available: "&cVault n'est pas disponible sur ce serveur."
+  not-enough-money: "&cVous n'avez pas assez d'argent. Il vous manque &e${0}"
+  unlock-failed: "&cErreur lors du déverrouillage du slot."
+  slot-unlocked: "&a✓ Slot &e{0}&a déverrouillé pour &6${1}"
