@@ -178,6 +178,13 @@ public class BackpackCommand implements CommandExecutor {
      * Déverrouille un slot pour un joueur
      */
     public boolean unlockSlot(Player player, int slot) {
+        // Vérifier que l'économie est disponible
+        if (economy == null) {
+            plugin.getLogger().severe("Economy (Vault) non disponible pour " + player.getName());
+            player.sendMessage("§cErreur: Le système d'économie n'est pas disponible!");
+            return false;
+        }
+
         double price = backpackManager.getPriceForSlot(slot);
 
         // Vérifier si le joueur a assez d'argent

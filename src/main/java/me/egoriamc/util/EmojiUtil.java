@@ -32,13 +32,13 @@ public class EmojiUtil {
      */
     public static void loadEmojis(JavaPlugin plugin) {
         File emojisFile = new File(plugin.getDataFolder(), "emojis.yml");
-        
+
         if (!emojisFile.exists()) {
             plugin.saveResource("emojis.yml", false);
         }
 
         FileConfiguration emojisConfig = YamlConfiguration.loadConfiguration(emojisFile);
-        
+
         // Charger tous les emojis depuis le fichier
         if (emojisConfig.getConfigurationSection("emojis") != null) {
             for (String key : emojisConfig.getConfigurationSection("emojis").getKeys(false)) {
@@ -64,14 +64,14 @@ public class EmojiUtil {
         while (matcher.find()) {
             String emojiName = matcher.group(1).toLowerCase();
             String emoji = discordEmojis.get(emojiName);
-            
+
             if (emoji != null) {
                 matcher.appendReplacement(result, Matcher.quoteReplacement(emoji));
             } else {
                 matcher.appendReplacement(result, matcher.group(0));
             }
         }
-        
+
         matcher.appendTail(result);
         return result.toString();
     }

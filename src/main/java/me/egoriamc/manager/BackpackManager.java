@@ -69,7 +69,23 @@ public class BackpackManager {
         } else {
             FileConfiguration config = YamlConfiguration.loadConfiguration(file);
             Set<Integer> slots = new HashSet<>(config.getIntegerList("unlocked-slots"));
-            unlockedSlots.put(uuid, slots);
+
+            // Migration: nettoyer les données corrompues
+            // Assurer que les slots sont déverrouillés séquentiellement à partir de 0
+            if (!slots.contains(0)) {
+                plugin.getLogger().warning("Migration: Le slot 0 manquait pour " + uuid + ", ajout...");
+                slots.add(0);
+            }
+
+            // Supprimer les slots invalides (au-delà du total possible)
+            Set<Integer> validSlots = new HashSet<>();
+            for (int slot : slots) {
+                if (slot >= 0 && slot < 54) { // Max 54 slots (6 lignes)
+                    validSlots.add(slot);
+                }
+            }
+
+            unlockedSlots.put(uuid, validSlots);
         }
     }
 
@@ -139,18 +155,25 @@ public class BackpackManager {
         Set<Integer> slots = unlockedSlots.getOrDefault(uuid, new HashSet<>());
 
         // Vérifier que le slot est valide
-        if (slot < 0 || slot >= getTotalSlots(player)) {
+        int totalSlots = getTotalSlots(player);
+        if (slot < 0 || slot >= totalSlots) {
+            plugin.getLogger()
+                    .warning("Slot invalide pour " + player.getName() + ": " + slot + " (total: " + totalSlots + ")");
             return false;
         }
 
         // Vérifier que le slot n'est pas déjà déverrouillé
         if (slots.contains(slot)) {
+            plugin.getLogger().warning("Slot déjà déverrouillé pour " + player.getName() + ": " + slot);
             return false;
         }
 
         // Vérifier que tous les slots antérieurs sont déverrouillés
         for (int i = 0; i < slot; i++) {
             if (!slots.contains(i)) {
+                plugin.getLogger().warning(
+                        "Slot " + i + " pas déverrouillé pour " + player.getName() + " (tentative: " + slot + ")");
+                plugin.getLogger().warning("Slots déverrouillés: " + slots);
                 return false;
             }
         }
@@ -158,6 +181,7 @@ public class BackpackManager {
         slots.add(slot);
         unlockedSlots.put(uuid, slots);
         saveBackpackData(uuid);
+        plugin.getLogger().info("Slot " + slot + " déverrouillé pour " + player.getName());
         return true;
     }
 

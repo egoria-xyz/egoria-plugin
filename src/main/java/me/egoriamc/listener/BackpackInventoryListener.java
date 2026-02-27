@@ -44,6 +44,12 @@ public class BackpackInventoryListener implements Listener {
             return;
         }
 
+        // Empêcher les clics sur les slots désactivés (vitre grise)
+        if (clickedItem != null && clickedItem.getType() == Material.GRAY_STAINED_GLASS_PANE) {
+            event.setCancelled(true);
+            return;
+        }
+
         // Vérifier si c'est un slot verrouillé (BARRIER = prochain slot à
         // déverrouiller)
         if (clickedItem != null && clickedItem.getType() == Material.BARRIER) {
@@ -53,6 +59,7 @@ public class BackpackInventoryListener implements Listener {
             BackpackCommand command = new BackpackCommand(plugin);
             // Charger les données du backpack pour éviter les inconsistances
             plugin.getBackpackManager().loadBackpackData(player.getUniqueId());
+            plugin.getLogger().info("Tentative de déverrouillage du slot " + slot + " pour " + player.getName());
             if (command.unlockSlot(player, slot)) {
                 // Sauvegarder l'inventaire avant de le rafraîchir
                 command.saveBackpackInventory(player);
@@ -61,6 +68,7 @@ public class BackpackInventoryListener implements Listener {
                 player.openInventory(command.createBackpackInventory(player));
             } else {
                 player.playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 1.0f, 0.5f);
+                player.sendMessage(plugin.getMessageManager().getMessage("backpack.unlock-failed"));
             }
         }
     }
