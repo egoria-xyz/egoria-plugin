@@ -178,6 +178,9 @@ public class BackpackCommand implements CommandExecutor {
      * Déverrouille un slot pour un joueur
      */
     public boolean unlockSlot(Player player, int slot) {
+        plugin.getLogger().info("=== UNLOCK SLOT DEBUG ===");
+        plugin.getLogger().info("Joueur: " + player.getName() + ", Slot: " + slot);
+
         // Vérifier que l'économie est disponible
         if (economy == null) {
             plugin.getLogger().severe("Economy (Vault) non disponible pour " + player.getName());
@@ -186,25 +189,31 @@ public class BackpackCommand implements CommandExecutor {
         }
 
         double price = backpackManager.getPriceForSlot(slot);
+        double balance = economy.getBalance(player);
+        plugin.getLogger().info("Prix: $" + price + ", Solde: $" + balance);
 
         // Vérifier si le joueur a assez d'argent
-        if (economy.getBalance(player) < price) {
+        if (balance < price) {
+            plugin.getLogger().info("Pas assez d'argent");
             player.sendMessage(messageManager.getMessage("backpack.not-enough-money",
-                    formatPrice(price - economy.getBalance(player))));
+                    formatPrice(price - balance)));
             return false;
         }
 
         // Retirer l'argent
         economy.withdrawPlayer(player, price);
+        plugin.getLogger().info("Argent retiré: $" + price);
 
         // Déverrouiller le slot
         if (!backpackManager.unlockSlot(player, slot)) {
             // Revenir l'argent si le déverrouillage échoue
             economy.depositPlayer(player, price);
+            plugin.getLogger().info("Déverrouillage échoué, argent revenu");
             player.sendMessage(messageManager.getMessage("backpack.unlock-failed"));
             return false;
         }
 
+        plugin.getLogger().info("Slot " + slot + " déverrouillé avec succès");
         player.sendMessage(messageManager.getMessage("backpack.slot-unlocked",
                 (slot + 1), formatPrice(price)));
 
