@@ -79,8 +79,13 @@ public class BackpackInventoryManager {
                     int slot = Integer.parseInt(key);
                     String encoded = config.getString("items." + key);
                     ItemStack item = decodeItemStack(encoded);
-                    if (item != null) {
+
+                    // Ignorer les items corrompus (BARRIER, VITRE GRISE)
+                    if (item != null && !item.getType().name().contains("BARRIER")
+                            && !item.getType().name().contains("GLASS_PANE")) {
                         items.put(slot, item);
+                    } else if (item != null) {
+                        plugin.getLogger().warning("Nettoyage: Item UI trouvé au slot " + slot + " pour " + uuid);
                     }
                 } catch (NumberFormatException ignored) {
                     // Clé invalide

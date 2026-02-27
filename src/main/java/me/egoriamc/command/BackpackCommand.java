@@ -248,10 +248,15 @@ public class BackpackCommand implements CommandExecutor {
         for (int i = 0; i < inventory.getSize(); i++) {
             ItemStack item = inventory.getItem(i);
 
-            // Sauvegarder seulement si c'est un slot déverrouillé et qu'il y a un item
-            // valide
-            if (unlockedSlots.contains(i) && item != null && !item.getType().isAir()) {
+            // Sauvegarder seulement si:
+            // 1. C'est un slot déverrouillé
+            // 2. Il y a un item valide
+            // 3. Ce n'est pas une barrière ou vitre (UI elements)
+            if (unlockedSlots.contains(i) && item != null && !item.getType().isAir()
+                    && item.getType() != Material.BARRIER
+                    && item.getType() != Material.GRAY_STAINED_GLASS_PANE) {
                 items.put(i, item);
+                plugin.getLogger().info("Sauvegarde slot " + i + ": " + item.getType());
             }
         }
 
