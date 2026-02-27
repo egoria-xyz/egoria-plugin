@@ -102,12 +102,16 @@ public class BackpackInventoryListener implements Listener {
             return;
         }
 
-        // Vérifier que le drag ne se fait pas sur les slots verrouillés ou désactivés
-        for (int slot : event.getRawSlots()) {
-            if (slot < event.getInventory().getSize()) {
+        // Bloquer SEULEMENT les drags qui terminent directement sur une barrière ou
+        // vitre grise
+        // Vérifier uniquement les slots de destination du drag (les slots primaires)
+        for (int slot : event.getInventorySlots()) {
+            // Vérifier si ce slot est du backpack (top inventory)
+            if (slot >= 0 && slot < event.getInventory().getSize()) {
                 ItemStack item = event.getInventory().getItem(slot);
-                if (item != null
-                        && (item.getType() == Material.BARRIER || item.getType() == Material.GRAY_STAINED_GLASS_PANE)) {
+                // Bloquer UNIQUEMENT si on essaie de poser sur une barrière/vitre
+                if (item != null && (item.getType() == Material.BARRIER
+                        || item.getType() == Material.GRAY_STAINED_GLASS_PANE)) {
                     event.setCancelled(true);
                     player.playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 1.0f, 0.5f);
                     return;

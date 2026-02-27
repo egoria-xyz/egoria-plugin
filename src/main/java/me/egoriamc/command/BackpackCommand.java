@@ -111,6 +111,9 @@ public class BackpackCommand implements CommandExecutor {
                 ItemStack item = savedItems.getOrDefault(i, null);
                 if (item != null && !item.getType().isAir()) {
                     inventory.setItem(i, item);
+                    plugin.getLogger().info("  Slot " + i + ": item " + item.getType());
+                } else {
+                    plugin.getLogger().info("  Slot " + i + ": VIDE");
                 }
                 // Ne rien mettre pour les slots vides (les laisser disponibles pour des items)
             } else {
@@ -119,13 +122,16 @@ public class BackpackCommand implements CommandExecutor {
                     double price = backpackManager.getPriceForSlot(i);
                     ItemStack lockedSlot = createLockedSlotItem(price);
                     inventory.setItem(i, lockedSlot);
+                    plugin.getLogger().info("  Slot " + i + ": BARRIER (prochain à déverrouiller)");
                 } else {
                     // Les autres slots verrouillés ne sont pas cliquables
                     ItemStack disabledSlot = createDisabledSlotItem();
                     inventory.setItem(i, disabledSlot);
+                    plugin.getLogger().info("  Slot " + i + ": VITRE GRISE");
                 }
             }
         }
+        plugin.getLogger().info("Inventaire créé - Next locked slot: " + nextLockedSlot);
 
         return inventory;
     }
