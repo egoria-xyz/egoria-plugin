@@ -78,17 +78,17 @@ public class MessageManager {
      */
     public String getPlayerGroup(Player player) {
         // Vérifie les permissions en ordre du plus haut au plus bas grade
-        // Ceci fonctionne car LuckPerms intègre le système de permissions Bukkit
+        // IMPORTANT: L'ordre des vérifications détermine la priorité (du plus haut au
+        // plus bas)
 
-        // Vérifier d'abord les permissions spécifiques pour éviter les conflits
-        if (player.hasPermission("group.developer")) {
-            return "developer";
+        if (player.hasPermission("group.owner")) {
+            return "owner";
         }
         if (player.hasPermission("group.admin")) {
             return "admin";
         }
-        if (player.hasPermission("group.owner")) {
-            return "owner";
+        if (player.hasPermission("group.developer")) {
+            return "developer";
         }
         if (player.hasPermission("group.staff")) {
             return "staff";

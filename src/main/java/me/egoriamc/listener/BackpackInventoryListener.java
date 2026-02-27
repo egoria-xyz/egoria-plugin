@@ -44,7 +44,8 @@ public class BackpackInventoryListener implements Listener {
             return;
         }
 
-        // Vérifier si c'est un slot verrouillé
+        // Vérifier si c'est un slot verrouillé (BARRIER = prochain slot à
+        // déverrouiller)
         if (clickedItem != null && clickedItem.getType() == Material.BARRIER) {
             event.setCancelled(true);
 
@@ -85,11 +86,12 @@ public class BackpackInventoryListener implements Listener {
             return;
         }
 
-        // Vérifier que le drag ne se fait pas sur les slots verrouillés
+        // Vérifier que le drag ne se fait pas sur les slots verrouillés ou désactivés
         for (int slot : event.getRawSlots()) {
             if (slot < event.getInventory().getSize()) {
                 ItemStack item = event.getInventory().getItem(slot);
-                if (item != null && item.getType() == Material.BARRIER) {
+                if (item != null
+                        && (item.getType() == Material.BARRIER || item.getType() == Material.GRAY_STAINED_GLASS_PANE)) {
                     event.setCancelled(true);
                     player.playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 1.0f, 0.5f);
                     return;

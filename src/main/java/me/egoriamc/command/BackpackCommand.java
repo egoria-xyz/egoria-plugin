@@ -99,6 +99,7 @@ public class BackpackCommand implements CommandExecutor {
         Map<Integer, ItemStack> savedItems = inventoryManager.loadBackpackInventory(player.getUniqueId());
 
         Set<Integer> unlockedSlots = backpackManager.getUnlockedSlots(player.getUniqueId());
+        int nextLockedSlot = backpackManager.getNextLockedSlot(player.getUniqueId(), player);
 
         // Ajouter les items et les slots verrouillés
         for (int i = 0; i < totalSlots; i++) {
@@ -109,10 +110,16 @@ public class BackpackCommand implements CommandExecutor {
                     inventory.setItem(i, item);
                 }
             } else {
-                // Slot verrouillé
-                double price = backpackManager.getPriceForSlot(i);
-                ItemStack lockedSlot = createLockedSlotItem(price);
-                inventory.setItem(i, lockedSlot);
+                // Slot verrouillé - afficher seulement le prochain à déverrouiller
+                if (i == nextLockedSlot) {
+                    double price = backpackManager.getPriceForSlot(i);
+                    ItemStack lockedSlot = createLockedSlotItem(price);
+                    inventory.setItem(i, lockedSlot);
+                } else {
+                    // Les autres slots verrouillés ne sont pas cliquables
+                    ItemStack disabledSlot = createDisabledSlotItem();
+                    inventory.setItem(i, disabledSlot);
+                }
             }
         }
 
@@ -132,6 +139,26 @@ public class BackpackCommand implements CommandExecutor {
             lore.add("§7Prix: §6$" + formatPrice(price));
             lore.add("");
             lore.add("§6➤ Cliquez pour déverrouiller");
+            meta.setLore(lore);
+            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            item.setItemMeta(meta);
+        }
+
+        return item;
+    }
+
+    /**
+     * Crée l'item pour un slot désactivé (ne peut pas être déverrouillé encore)
+     */
+    private ItemStack createDisabledSlotItem() {
+        ItemStack item = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        ItemMeta meta = item.getItemMeta();
+
+        if (meta != null) {
+            meta.setDisplayName("§7§lINDISPONIBLE");
+            List<String> lore = new ArrayList<>();
+            lore.add("§7Déverrouillez d'abord les");
+            lore.add("§7slots précédents");
             meta.setLore(lore);
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
             item.setItemMeta(meta);
