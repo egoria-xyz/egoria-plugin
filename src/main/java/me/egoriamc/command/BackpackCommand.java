@@ -93,7 +93,10 @@ public class BackpackCommand implements CommandExecutor {
     public Inventory createBackpackInventory(Player player) {
         int totalSlots = backpackManager.getTotalSlots(player);
         String title = "§eBackpack - " + (totalSlots / 9) + " ligne(s)";
-        Inventory inventory = Bukkit.createInventory(null, totalSlots, title);
+
+        // Créer l'inventaire avec un holder (permet les modifications d'items)
+        Inventory inventory = Bukkit.createInventory(new BackpackInventoryHolder(player.getUniqueId()), totalSlots,
+                title);
 
         // Charger les items existants
         Map<Integer, ItemStack> savedItems = inventoryManager.loadBackpackInventory(player.getUniqueId());
@@ -109,6 +112,7 @@ public class BackpackCommand implements CommandExecutor {
                 if (item != null && !item.getType().isAir()) {
                     inventory.setItem(i, item);
                 }
+                // Ne rien mettre pour les slots vides (les laisser disponibles pour des items)
             } else {
                 // Slot verrouillé - afficher seulement le prochain à déverrouiller
                 if (i == nextLockedSlot) {
