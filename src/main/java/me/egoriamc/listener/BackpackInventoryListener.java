@@ -36,10 +36,10 @@ public class BackpackInventoryListener implements Listener {
             return;
         }
 
-        int slot = event.getRawSlot();
         ItemStack clickedItem = event.getCurrentItem();
 
         // Vérifier que le clic n'est pas sur un slot invalide
+        int slot = event.getSlot();
         if (slot < 0 || slot >= event.getInventory().getSize()) {
             return;
         }
@@ -59,8 +59,16 @@ public class BackpackInventoryListener implements Listener {
             BackpackCommand command = new BackpackCommand(plugin);
             // Charger les données du backpack pour éviter les inconsistances
             plugin.getBackpackManager().loadBackpackData(player.getUniqueId());
+
+            // Obtenir le vrai prochain slot à déverrouiller
+            int nextSlot = plugin.getBackpackManager().getNextLockedSlot(player.getUniqueId(), player);
             plugin.getLogger().info("Tentative de déverrouillage du slot " + slot + " pour " + player.getName());
-            if (command.unlockSlot(player, slot)) {
+            plugin.getLogger().info("Slots actuellement déverrouillés: "
+                    + plugin.getBackpackManager().getUnlockedSlots(player.getUniqueId()));
+            plugin.getLogger().info("Prochain slot à déverrouiller: " + nextSlot);
+
+            // Déverrouiller le prochain slot valide au lieu du slot cliqué
+            if (command.unlockSlot(player, nextSlot)) {
                 // Sauvegarder l'inventaire avant de le rafraîchir
                 command.saveBackpackInventory(player);
                 // Mettre à jour l'inventaire

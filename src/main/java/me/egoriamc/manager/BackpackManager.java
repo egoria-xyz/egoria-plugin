@@ -66,18 +66,20 @@ public class BackpackManager {
             slots.add(0); // Premier slot toujours déverrouillé
             unlockedSlots.put(uuid, slots);
             saveBackpackData(uuid);
+            plugin.getLogger().info("Backpack créé avec slot 0 déverrouillé pour " + uuid);
         } else {
             FileConfiguration config = YamlConfiguration.loadConfiguration(file);
             Set<Integer> slots = new HashSet<>(config.getIntegerList("unlocked-slots"));
 
             // Migration: nettoyer les données corrompues
             // Assurer que les slots sont déverrouillés séquentiellement à partir de 0
-            if (!slots.contains(0)) {
-                plugin.getLogger().warning("Migration: Le slot 0 manquait pour " + uuid + ", ajout...");
+            if (slots.isEmpty() || !slots.contains(0)) {
+                plugin.getLogger().warning("Migration: Réinitialisation du backpack pour " + uuid);
+                slots = new HashSet<>();
                 slots.add(0);
             }
 
-            // Supprimer les slots invalides (au-delà du total possible)
+            // Valider et nettoyer les slots
             Set<Integer> validSlots = new HashSet<>();
             for (int slot : slots) {
                 if (slot >= 0 && slot < 54) { // Max 54 slots (6 lignes)
@@ -85,7 +87,13 @@ public class BackpackManager {
                 }
             }
 
+            // S'assurer que le slot 0 est présent
+            if (!validSlots.contains(0)) {
+                validSlots.add(0);
+            }
+
             unlockedSlots.put(uuid, validSlots);
+            plugin.getLogger().info("Backpack chargé pour " + uuid + " slots: " + validSlots);
         }
     }
 
@@ -101,6 +109,7 @@ public class BackpackManager {
 
         try {
             config.save(file);
+            plugin.getLogger().info("Backpack sauvegardé pour " + uuid + " avec slots: " + slots);
         } catch (IOException e) {
             plugin.getLogger().warning("Impossible de sauvegarder le backpack de " + uuid);
             e.printStackTrace();
