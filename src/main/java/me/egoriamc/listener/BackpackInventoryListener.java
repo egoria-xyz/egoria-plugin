@@ -50,6 +50,8 @@ public class BackpackInventoryListener implements Listener {
 
             // Essayer de déverrouiller le slot
             BackpackCommand command = new BackpackCommand(plugin);
+            // Charger les données du backpack pour éviter les inconsistances
+            plugin.getBackpackManager().loadBackpackData(player.getUniqueId());
             if (command.unlockSlot(player, slot)) {
                 // Sauvegarder l'inventaire avant de le rafraîchir
                 command.saveBackpackInventory(player);
