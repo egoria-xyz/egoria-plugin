@@ -51,6 +51,8 @@ public class BackpackInventoryListener implements Listener {
             // Essayer de déverrouiller le slot
             BackpackCommand command = new BackpackCommand(plugin);
             if (command.unlockSlot(player, slot)) {
+                // Sauvegarder l'inventaire avant de le rafraîchir
+                command.saveBackpackInventory(player);
                 // Mettre à jour l'inventaire
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
                 player.openInventory(command.createBackpackInventory(player));
