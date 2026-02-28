@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -81,32 +82,11 @@ public class WarpListGuiListener implements Listener {
         // Enlever la couleur et l'emoji
         warpName = warpName.replace("§e🌍 ", "").replace("§e", "").replace("§f", "");
 
-        EgoriaMC plugin = EgoriaMC.getInstance();
-        WarpManager warpManager = plugin.getWarpManager();
-        MessageManager messageManager = plugin.getMessageManager();
-
-        Location warp = warpManager.getWarp(warpName);
-
-        if (warp == null) {
-            player.sendMessage(messageManager.getWarpNotFound());
-            player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.5f, 0.5f);
-            return;
-        }
-
-        // Vérifier la permission
-        if (!player.hasPermission("egoriamc.warp.use")) {
-            player.sendMessage(messageManager.translateColors("&cVous n'avez pas la permission."));
-            player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.5f, 0.5f);
-            return;
-        }
-
-        player.teleport(warp);
-        player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
-        player.sendMessage(messageManager.getWarpTpSuccess(warpName));
-        plugin.logInfo(
-                messageManager.translateColors("&a" + player.getName() + " &es'est téléporté au warp: &b" + warpName));
-
+        // Fermer l'inventaire
         player.closeInventory();
+
+        // Exécuter la commande /warp
+        player.performCommand("warp " + warpName);
     }
 
     /**
@@ -166,6 +146,27 @@ public class WarpListGuiListener implements Listener {
      */
     public static void setPlayerPage(String playerId, int page) {
         PLAYER_WARP_PAGES.put(playerId, Math.max(1, page));
+    }
+
+    /**
+     * Bloque le glisser-déposer dans la GUI des warps
+     */
+    @EventHandler
+    public void onInventoryDrag(InventoryDragEvent event) {
+        Inventory inventory = event.getInventory();
+
+        if (inventory == null || inventory.getSize() != INVENTORY_SIZE) {
+            return;
+        }
+
+        // Vérifier si c'est bien la GUI des warps
+        ItemStack slot0 = inventory.getItem(0);
+        if (slot0 == null || slot0.getType() != Material.COMPASS) {
+            return;
+        }
+
+        // Bloquer l'événement
+        event.setCancelled(true);
     }
 
     /**

@@ -3,6 +3,7 @@ package me.egoriamc.manager;
 import me.egoriamc.EgoriaMC;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
@@ -47,22 +48,38 @@ public class BalanceTopGuiManager {
      * Crée l'inventaire du top argent (static pour accès depuis le listener)
      */
     public static Inventory createBalanceTopInventory(int page) {
-        // Récupérer tous les joueurs connectés et les trier par solde décroissant
+        // Récupérer tous les joueurs (connectés + offline) et les trier par solde
+        // décroissant
         List<PlayerBalance> players = new ArrayList<>();
         EconomyManager economyManager = EgoriaMC.getInstance().getEconomyManager();
         MessageManager messageManager = EgoriaMC.getInstance().getMessageManager();
 
-        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+        // Récupérer tous les joueurs offline ET online
+        for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
             try {
-                double balance = economyManager.getBalance(onlinePlayer);
-                players.add(new PlayerBalance(onlinePlayer, balance));
+                if (offlinePlayer.getName() != null) { // Vérifier que le joueur a un nom valide
+                    // Essayer de récupérer la balance comme joueur online si c'est possible
+                    Player onlinePlayer = offlinePlayer.getPlayer();
+                    double balance;
+
+                    if (onlinePlayer != null) {
+                        // Le joueur est connecté
+                        balance = economyManager.getBalance(onlinePlayer);
+                        players.add(new PlayerBalance(onlinePlayer, balance));
+                    } else {
+                        // Le joueur est offline, créer une entrée offline
+                        // Note: Nous créons une instance fictive pour l'affichage
+                        balance = economyManager.getBalance(offlinePlayer);
+                        players.add(new PlayerBalance(offlinePlayer, balance, offlinePlayer.getName()));
+                    }
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
         // Log pour debug
-        EgoriaMC.getInstance().logInfo("&eBalTop: " + players.size() + " joueurs trouvés");
+        EgoriaMC.getInstance().logInfo("&eBalTop: " + players.size() + " joueurs trouvés (online + offline)");
 
         // Trier du plus riche au plus pauvre
         players.sort((a, b) -> Double.compare(b.balance, a.balance));
@@ -173,10 +190,15 @@ public class BalanceTopGuiManager {
                 default -> "#" + rank;
             };
 
-            String playerName = pb.player.getName();
-            String grade = messageManager.getPlayerGroup(pb.player);
+            String playerName = pb.playerName;
+            String grade;
+            if (pb.isOnline && pb.player != null) {
+                grade = messageManager.getPlayerGroup(pb.player);
+            } else {
+                grade = "member"; // Les joueurs offline ont le grade par défaut
+            }
             String gradeColor = getGradeColor(grade);
-            String gradeDisplay = gradeColor + capitalize(grade);
+            String gradeDisplay = gradeColor + capitalize(grade) + (pb.isOnline ? "" : " &7(Offline)");
 
             // Debug: afficher le grade détecté
             EgoriaMC.getInstance().logInfo("&7[BalTop] Joueur: " + playerName + " | Grade: " + grade);
@@ -225,11 +247,27 @@ public class BalanceTopGuiManager {
      */
     public static class PlayerBalance {
         public Player player;
+        public OfflinePlayer offlinePlayer;
         public double balance;
+        public String playerName;
+        public boolean isOnline;
 
+        // Constructeur pour joueur online
         public PlayerBalance(Player player, double balance) {
             this.player = player;
+            this.offlinePlayer = player;
             this.balance = balance;
+            this.playerName = player.getName();
+            this.isOnline = true;
+        }
+
+        // Constructeur pour joueur offline
+        public PlayerBalance(OfflinePlayer offlinePlayer, double balance, String playerName) {
+            this.player = null;
+            this.offlinePlayer = offlinePlayer;
+            this.balance = balance;
+            this.playerName = playerName;
+            this.isOnline = false;
         }
     }
 }

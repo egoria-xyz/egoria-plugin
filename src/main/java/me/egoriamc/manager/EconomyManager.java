@@ -2,6 +2,7 @@ package me.egoriamc.manager;
 
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -53,12 +54,21 @@ public class EconomyManager {
     }
 
     /**
-     * Récupère le solde d'un joueur
+     * Récupère le solde d'un joueur online
      */
     public double getBalance(Player player) {
         if (!isEnabled())
             return 0;
         return economy.getBalance(player);
+    }
+
+    /**
+     * Récupère le solde d'un joueur (online ou offline)
+     */
+    public double getBalance(OfflinePlayer offlinePlayer) {
+        if (!isEnabled())
+            return 0;
+        return economy.getBalance(offlinePlayer);
     }
 
     /**
