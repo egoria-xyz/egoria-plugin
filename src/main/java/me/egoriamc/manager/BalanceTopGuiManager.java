@@ -49,11 +49,20 @@ public class BalanceTopGuiManager {
     public static Inventory createBalanceTopInventory(int page) {
         // Récupérer tous les joueurs connectés et les trier par solde décroissant
         List<PlayerBalance> players = new ArrayList<>();
+        EconomyManager economyManager = EgoriaMC.getInstance().getEconomyManager();
+        MessageManager messageManager = EgoriaMC.getInstance().getMessageManager();
+
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            EconomyManager economyManager = EgoriaMC.getInstance().getEconomyManager();
-            double balance = economyManager.getBalance(onlinePlayer);
-            players.add(new PlayerBalance(onlinePlayer, balance));
+            try {
+                double balance = economyManager.getBalance(onlinePlayer);
+                players.add(new PlayerBalance(onlinePlayer, balance));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
+        // Log pour debug
+        EgoriaMC.getInstance().logInfo("&eBalTop: " + players.size() + " joueurs trouvés");
 
         // Trier du plus riche au plus pauvre
         players.sort((a, b) -> Double.compare(b.balance, a.balance));
@@ -78,14 +87,18 @@ public class BalanceTopGuiManager {
         int rank = startIndex + 1;
 
         for (int i = startIndex; i < endIndex && slot < 25; i++) {
-            PlayerBalance pb = players.get(i);
+            try {
+                PlayerBalance pb = players.get(i);
+                // Créer l'item avec la couleur du grade
+                ItemStack item = createRankItem(EgoriaMC.getInstance(), rank, pb, i + 1);
+                gui.setItem(slot, item);
 
-            // Créer l'item avec la couleur du grade
-            ItemStack item = createRankItem(EgoriaMC.getInstance(), rank, pb, i + 1);
-            gui.setItem(slot, item);
-
-            slot++;
-            rank++;
+                slot++;
+                rank++;
+            } catch (Exception e) {
+                EgoriaMC.getInstance().logError("&eErreur lors de la création d'un item baltop: " + e.getMessage());
+                e.printStackTrace();
+            }
         }
 
         // Ajouter les boutons de navigation
@@ -164,6 +177,9 @@ public class BalanceTopGuiManager {
             String grade = messageManager.getPlayerGroup(pb.player);
             String gradeColor = getGradeColor(grade);
             String gradeDisplay = gradeColor + capitalize(grade);
+
+            // Debug: afficher le grade détecté
+            EgoriaMC.getInstance().logInfo("&7[BalTop] Joueur: " + playerName + " | Grade: " + grade);
 
             String balanceFormatted = economyManager.formatBalance(pb.balance);
 
