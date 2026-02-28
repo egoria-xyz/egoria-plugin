@@ -5,6 +5,7 @@ import me.egoriamc.command.AnnounceCommand;
 import me.egoriamc.command.BackpackCommand;
 import me.egoriamc.command.BalanceCommand;
 import me.egoriamc.command.BalanceTopCommand;
+import me.egoriamc.command.CraftCommand;
 import me.egoriamc.command.FurnaceCommand;
 import me.egoriamc.command.HomeCommand;
 import me.egoriamc.command.HelpCommand;
