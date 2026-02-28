@@ -1,21 +1,27 @@
 package me.egoriamc;
 
 import me.egoriamc.command.AddMoneyCommand;
+import me.egoriamc.command.AddMoneyCommandTabCompleter;
 import me.egoriamc.command.AnnounceCommand;
 import me.egoriamc.command.BackpackCommand;
 import me.egoriamc.command.BalanceCommand;
+import me.egoriamc.command.BalanceCommandTabCompleter;
 import me.egoriamc.command.BalanceTopCommand;
 import me.egoriamc.command.CraftCommand;
 import me.egoriamc.command.FurnaceCommand;
 import me.egoriamc.command.HomeCommand;
+import me.egoriamc.command.HomeCommandTabCompleter;
 import me.egoriamc.command.HelpCommand;
 import me.egoriamc.command.LiveCommand;
 import me.egoriamc.command.PluginsCommand;
 import me.egoriamc.command.RemoveMoneyCommand;
+import me.egoriamc.command.RemoveMoneyCommandTabCompleter;
 import me.egoriamc.command.ReloadCommand;
 import me.egoriamc.command.Vote2SleepCommand;
 import me.egoriamc.command.WarnCommand;
+import me.egoriamc.command.WarnCommandTabCompleter;
 import me.egoriamc.command.WarpCommand;
+import me.egoriamc.command.WarpCommandTabCompleter;
 import me.egoriamc.listener.BackpackInventoryListener;
 import me.egoriamc.listener.BackpackSaveListener;
 import me.egoriamc.listener.BalanceTopGuiListener;
@@ -27,6 +33,7 @@ import me.egoriamc.listener.PlayerEventListener;
 import me.egoriamc.listener.MentionListener;
 import me.egoriamc.listener.PluginsInventoryListener;
 import me.egoriamc.listener.WorldLoadListener;
+import me.egoriamc.listener.WarpListGuiListener;
 import me.egoriamc.manager.AutoMessageManager;
 import me.egoriamc.manager.BackpackInventoryManager;
 import me.egoriamc.manager.BackpackManager;
@@ -96,7 +103,9 @@ public class EgoriaMC extends JavaPlugin {
 
             // Enregistrer les commandes
             getCommand("home").setExecutor(new HomeCommand(this));
+            getCommand("home").setTabCompleter(new HomeCommandTabCompleter(this));
             getCommand("warp").setExecutor(new WarpCommand(this));
+            getCommand("warp").setTabCompleter(new WarpCommandTabCompleter(this));
             getCommand("help").setExecutor(new HelpCommand(this));
             getCommand("plugins").setExecutor(new PluginsCommand());
             getCommand("annonce").setExecutor(new AnnounceCommand(this));
@@ -105,15 +114,21 @@ public class EgoriaMC extends JavaPlugin {
             getCommand("live").setExecutor(new LiveCommand(this));
             getCommand("reload").setExecutor(new ReloadCommand(this));
             getCommand("warn").setExecutor(new WarnCommand(this));
+            getCommand("warn").setTabCompleter(new WarnCommandTabCompleter());
             getCommand("vote2sleep").setExecutor(new Vote2SleepCommand(this));
             getCommand("backpack").setExecutor(new BackpackCommand(this));
             getCommand("balance").setExecutor(new BalanceCommand(this));
+            getCommand("balance").setTabCompleter(new BalanceCommandTabCompleter());
             getCommand("money").setExecutor(new BalanceCommand(this));
+            getCommand("money").setTabCompleter(new BalanceCommandTabCompleter());
             getCommand("bal").setExecutor(new BalanceCommand(this));
+            getCommand("bal").setTabCompleter(new BalanceCommandTabCompleter());
             getCommand("baltop").setExecutor(new BalanceTopCommand(this));
             getCommand("moneytop").setExecutor(new BalanceTopCommand(this));
             getCommand("addmoney").setExecutor(new AddMoneyCommand(this));
+            getCommand("addmoney").setTabCompleter(new AddMoneyCommandTabCompleter());
             getCommand("removemoney").setExecutor(new RemoveMoneyCommand(this));
+            getCommand("removemoney").setTabCompleter(new RemoveMoneyCommandTabCompleter());
 
             // Enregistrer les événements
             getServer().getPluginManager().registerEvents(new PlayerEventListener(this), this);
@@ -127,6 +142,7 @@ public class EgoriaMC extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new HelpGuiListener(helpGuiManager), this);
             getServer().getPluginManager().registerEvents(new BalanceTopGuiListener(), this);
             getServer().getPluginManager().registerEvents(new WorldLoadListener(this), this);
+            getServer().getPluginManager().registerEvents(new WarpListGuiListener(), this);
 
             logInfo("&ePlugin activé avec succès !");
             logInfo("&e- Gestion des homes : &aACTIVÉE");
