@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -27,22 +28,29 @@ public class WarpListGuiListener implements Listener {
     private static final int INVENTORY_SIZE = 27;
     private static final Map<String, Integer> PLAYER_WARP_PAGES = new HashMap<>();
 
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
-        Player player = (Player) event.getWhoClicked();
-        Inventory inventory = event.getClickedInventory();
+    private boolean isWarpListGui(Inventory inv) {
+        if (inv == null || inv.getSize() != INVENTORY_SIZE)
+            return false;
+        ItemStack s0 = inv.getItem(0);
+        Inventory topInv = event.getView().getTopInventory();
 
-        if (inventory == null || inventory.getSize() != INVENTORY_SIZE) {
+        if (!isWarpListGui(topInv)) {
             return;
         }
 
-        // Vérifier si c'est bien la GUI des warps en regardant si les slots ont les
-        // bons items
-        ItemStack slot0 = inventory.getItem(0);
+        // Bloquer TOUS les clics immediatement
+        event.setCancelled(true);
+
+        Inventory clickedInv = event.getClickedInventory();
+        if (!isWarpListGui(clickedInv)) {
+            return;
+        }
+        ry.getItem(0);
         if (slot0 == null || slot0.getType() != Material.COMPASS) {
             return; // Ce n'est pas la GUI des warps
         }
 
+        // Bloquer tous les clics dans cette GUI
         event.setCancelled(true);
 
         ItemStack clicked = event.getCurrentItem();
@@ -52,15 +60,15 @@ public class WarpListGuiListener implements Listener {
 
         int slot = event.getSlot();
 
-        // Bouton précédent (slot 25)
+        // Bouton precedent (slot 25)
         if (slot == 25 && clicked.getType() == Material.ARROW) {
-            handlePreviousPageClick(player, inventory);
+            handlePreviousPageClick(player, clickedInv);
             return;
         }
 
         // Bouton suivant (slot 26)
         if (slot == 26 && clicked.getType() == Material.ARROW) {
-            handleNextPageClick(player, inventory);
+            handleNextPageClick(player, clickedInv);
             return;
         }
 
@@ -149,24 +157,25 @@ public class WarpListGuiListener implements Listener {
     }
 
     /**
-     * Bloque le glisser-déposer dans la GUI des warps
+     * Bloque le glisser-deposer dans la GUI des warps
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onInventoryDrag(InventoryDragEvent event) {
-        Inventory inventory = event.getInventory();
-
-        if (inventory == null || inventory.getSize() != INVENTORY_SIZE) {
-            return;
+        if (isWarpListGui(event.getInventory())) {
+            event.setCancelled(true);
         }
+    }
 
-        // Vérifier si c'est bien la GUI des warps
-        ItemStack slot0 = inventory.getItem(0);
-        if (slot0 == null || slot0.getType() != Material.COMPASS) {
-            return;
+    /**
+     * Bloque les clics en dehors de la GUI (cursor clicks)
+     */
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onInventoryCursorClick(InventoryClickEvent event) {
+        if (event.getClickedInventory() == null) {
+            if (isWarpListGui(event.getView().getTopInventory())) {
+                event.setCancelled(true);
+            }
         }
-
-        // Bloquer l'événement
-        event.setCancelled(true);
     }
 
     /**
