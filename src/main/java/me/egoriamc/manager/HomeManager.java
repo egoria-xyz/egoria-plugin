@@ -35,7 +35,8 @@ public class HomeManager {
             }
         }
 
-        reload();
+        // Retarder le chargement d'un tick pour que tous les mondes soient chargés
+        Bukkit.getScheduler().runTaskLater(plugin, this::reload, 1L);
     }
 
     public void reload() {
@@ -54,9 +55,14 @@ public class HomeManager {
                         if ("username".equals(homeName)) {
                             continue;
                         }
-                        Location loc = homesConfig.getLocation(uuidStr + "." + homeName + ".location");
-                        if (loc != null) {
-                            playerHomes.put(homeName, loc);
+                        try {
+                            Location loc = homesConfig.getLocation(uuidStr + "." + homeName + ".location");
+                            if (loc != null) {
+                                playerHomes.put(homeName, loc);
+                            }
+                        } catch (IllegalArgumentException e) {
+                            plugin.logError("⚠️  → Impossible de charger le home '" + homeName + "' du joueur "
+                                    + uuidStr + ": monde inexistant");
                         }
                     }
                 }

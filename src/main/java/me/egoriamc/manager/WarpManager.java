@@ -34,7 +34,8 @@ public class WarpManager {
             }
         }
 
-        reload();
+        // Retarder le chargement d'un tick pour que tous les mondes soient chargés
+        Bukkit.getScheduler().runTaskLater(plugin, this::reload, 1L);
     }
 
     public void reload() {
@@ -44,9 +45,13 @@ public class WarpManager {
         // Charger tous les warps en cache
         if (warpsConfig.contains("warps")) {
             for (String warpName : warpsConfig.getConfigurationSection("warps").getKeys(false)) {
-                Location loc = warpsConfig.getLocation("warps." + warpName + ".location");
-                if (loc != null) {
-                    warpsCache.put(warpName, loc);
+                try {
+                    Location loc = warpsConfig.getLocation("warps." + warpName + ".location");
+                    if (loc != null) {
+                        warpsCache.put(warpName, loc);
+                    }
+                } catch (IllegalArgumentException e) {
+                    plugin.logError("⚠️  → Impossible de charger le warp '" + warpName + "': monde inexistant");
                 }
             }
         }

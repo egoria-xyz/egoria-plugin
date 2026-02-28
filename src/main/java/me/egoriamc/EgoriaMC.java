@@ -26,6 +26,7 @@ import me.egoriamc.listener.HelpGuiListener;
 import me.egoriamc.listener.PlayerEventListener;
 import me.egoriamc.listener.MentionListener;
 import me.egoriamc.listener.PluginsInventoryListener;
+import me.egoriamc.listener.WorldLoadListener;
 import me.egoriamc.manager.AutoMessageManager;
 import me.egoriamc.manager.BackpackInventoryManager;
 import me.egoriamc.manager.BackpackManager;
@@ -122,6 +123,7 @@ public class EgoriaMC extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new CreatureSpawnListener(this), this);
             getServer().getPluginManager().registerEvents(new HelpGuiListener(helpGuiManager), this);
             getServer().getPluginManager().registerEvents(new BalanceTopGuiListener(), this);
+            getServer().getPluginManager().registerEvents(new WorldLoadListener(this), this);
 
             logInfo("&ePlugin activé avec succès !");
             logInfo("&e- Gestion des homes : &aACTIVÉE");
