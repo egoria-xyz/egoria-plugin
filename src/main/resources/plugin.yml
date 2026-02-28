@@ -8,7 +8,7 @@ description: Plugin de gestion des homes et messages personnalisés
 
 commands:
   help:
-    description: Affiche l'aide du plugin
+    description: Affiche l'aide du plugin dans une GUI
     usage: /help
     permission: egoriamc.help
   home:
@@ -56,6 +56,24 @@ commands:
     description: Ouvre votre backpack personnel
     usage: /backpack
     permission: egoriamc.backpack.use
+  balance:
+    description: Affiche votre solde d'argent
+    usage: /balance [pseudo]
+    permission: egoriamc.balance.use
+    aliases: [money, bal]
+  addmoney:
+    description: Ajoute de l'argent à un joueur (OP)
+    usage: /addmoney <joueur> <montant>
+    permission: egoriamc.addmoney
+  removemoney:
+    description: Retire de l'argent à un joueur (OP)
+    usage: /removemoney <joueur> <montant>
+    permission: egoriamc.removemoney
+  baltop:
+    description: Affiche le classement des joueurs par argent
+    usage: /baltop [page]
+    permission: egoriamc.baltop
+    aliases: [moneytop]
 
 permissions:
   egoriamc.help:
@@ -102,4 +120,19 @@ permissions:
     default: true
   egoriamc.backpack.use:
     description: Permet d'utiliser le backpack
+    default: true
+  egoriamc.balance.use:
+    description: Permet de voir son solde d'argent
+    default: true
+  egoriamc.balance.others:
+    description: Permet de voir le solde d'autres joueurs
+    default: op
+  egoriamc.addmoney:
+    description: Permet d'ajouter de l'argent à un joueur
+    default: op
+  egoriamc.removemoney:
+    description: Permet de retirer de l'argent à un joueur
+    default: op
+  egoriamc.baltop:
+    description: Permet de voir le classement des joueurs par argent
     default: true

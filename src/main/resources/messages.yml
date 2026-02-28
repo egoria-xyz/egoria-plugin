@@ -1,6 +1,13 @@
 # Messages personnalisables du serveur
 # ===================================
 
+# Messages d'erreur
+errors:
+  player-only: "&cSeuls les joueurs peuvent exécuter cette commande."
+  player-not-found: "&cCe joueur n'existe pas ou n'est pas connecté."
+  no-permission: "&cVous n'avez pas la permission d'exécuter cette commande."
+  economy-disabled: "&cLe système d'économie n'est pas activé sur ce serveur."
+
 # Messages des homes
 homes:
   set-success: "&aVotre home &e{name}&a a été créé avec succès !"
@@ -70,3 +77,13 @@ backpack:
   not-enough-money: "&cVous n'avez pas assez d'argent. Il vous manque &e${0}"
   unlock-failed: "&cErreur lors du déverrouillage du slot."
   slot-unlocked: "&a✓ Slot &e{0}&a déverrouillé pour &6${1}"
+# Messages d'économie
+economy:
+  balance-personal: "&6━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n&e💰 Votre solde: &f{balance}\n&6━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  balance-other: "&6━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n&e💰 Solde de &f{player}&e: &f{balance}\n&6━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  addmoney-success: "&a✓ Vous avez ajouté {amount} à &e{player}"
+  addmoney-received: "&6✓ Vous avez reçu {amount}&6 de la part d'un administrateur"
+  removemoney-success: "&a✓ Vous avez retiré {amount} à &e{player}"
+  removemoney-received: "&6✗ Un administrateur vous a retiré {amount}"
+  insufficient-funds: "&c{player} n'a que {balance}"
+  invalid-amount: "&cLe montant doit être un nombre positif valide."

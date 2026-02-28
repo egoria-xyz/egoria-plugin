@@ -1,30 +1,38 @@
 package me.egoriamc;
 
+import me.egoriamc.command.AddMoneyCommand;
 import me.egoriamc.command.AnnounceCommand;
 import me.egoriamc.command.BackpackCommand;
-import me.egoriamc.command.CraftCommand;
+import me.egoriamc.command.BalanceCommand;
+import me.egoriamc.command.BalanceTopCommand;
 import me.egoriamc.command.FurnaceCommand;
 import me.egoriamc.command.HomeCommand;
 import me.egoriamc.command.HelpCommand;
 import me.egoriamc.command.LiveCommand;
 import me.egoriamc.command.PluginsCommand;
+import me.egoriamc.command.RemoveMoneyCommand;
 import me.egoriamc.command.ReloadCommand;
 import me.egoriamc.command.Vote2SleepCommand;
 import me.egoriamc.command.WarnCommand;
 import me.egoriamc.command.WarpCommand;
 import me.egoriamc.listener.BackpackInventoryListener;
 import me.egoriamc.listener.BackpackSaveListener;
+import me.egoriamc.listener.BalanceTopGuiListener;
 import me.egoriamc.listener.ChatListener;
 import me.egoriamc.listener.CreatureSpawnListener;
 import me.egoriamc.listener.HomeInventoryListener;
+import me.egoriamc.listener.HelpGuiListener;
 import me.egoriamc.listener.PlayerEventListener;
 import me.egoriamc.listener.MentionListener;
 import me.egoriamc.listener.PluginsInventoryListener;
 import me.egoriamc.manager.AutoMessageManager;
 import me.egoriamc.manager.BackpackInventoryManager;
 import me.egoriamc.manager.BackpackManager;
+import me.egoriamc.manager.BalanceTopGuiManager;
 import me.egoriamc.manager.ConfigManager;
 import me.egoriamc.manager.DatabaseManager;
+import me.egoriamc.manager.EconomyManager;
+import me.egoriamc.manager.HelpGuiManager;
 import me.egoriamc.manager.SpawnConfigManager;
 import me.egoriamc.manager.WarnManager;
 import me.egoriamc.manager.HomeManager;
@@ -51,6 +59,9 @@ public class EgoriaMC extends JavaPlugin {
     private WarnManager warnManager;
     private BackpackManager backpackManager;
     private BackpackInventoryManager backpackInventoryManager;
+    private EconomyManager economyManager;
+    private HelpGuiManager helpGuiManager;
+    private BalanceTopGuiManager balanceTopGuiManager;
 
     @Override
     public void onEnable() {
@@ -68,6 +79,9 @@ public class EgoriaMC extends JavaPlugin {
             this.warnManager = new WarnManager(this);
             this.backpackManager = new BackpackManager(this);
             this.backpackInventoryManager = new BackpackInventoryManager(this);
+            this.economyManager = new EconomyManager(this);
+            this.helpGuiManager = new HelpGuiManager(this);
+            this.balanceTopGuiManager = new BalanceTopGuiManager(this);
 
             // Charger les emojis depuis emojis.yml
             EmojiUtil.loadEmojis(this);
@@ -88,6 +102,13 @@ public class EgoriaMC extends JavaPlugin {
             getCommand("warn").setExecutor(new WarnCommand(this));
             getCommand("vote2sleep").setExecutor(new Vote2SleepCommand(this));
             getCommand("backpack").setExecutor(new BackpackCommand(this));
+            getCommand("balance").setExecutor(new BalanceCommand(this));
+            getCommand("money").setExecutor(new BalanceCommand(this));
+            getCommand("bal").setExecutor(new BalanceCommand(this));
+            getCommand("baltop").setExecutor(new BalanceTopCommand(this));
+            getCommand("moneytop").setExecutor(new BalanceTopCommand(this));
+            getCommand("addmoney").setExecutor(new AddMoneyCommand(this));
+            getCommand("removemoney").setExecutor(new RemoveMoneyCommand(this));
 
             // Enregistrer les événements
             getServer().getPluginManager().registerEvents(new PlayerEventListener(this), this);
@@ -98,6 +119,8 @@ public class EgoriaMC extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new BackpackInventoryListener(this), this);
             getServer().getPluginManager().registerEvents(new BackpackSaveListener(this), this);
             getServer().getPluginManager().registerEvents(new CreatureSpawnListener(this), this);
+            getServer().getPluginManager().registerEvents(new HelpGuiListener(helpGuiManager), this);
+            getServer().getPluginManager().registerEvents(new BalanceTopGuiListener(), this);
 
             logInfo("&ePlugin activé avec succès !");
             logInfo("&e- Gestion des homes : &aACTIVÉE");
@@ -261,5 +284,17 @@ public class EgoriaMC extends JavaPlugin {
 
     public BackpackInventoryManager getBackpackInventoryManager() {
         return backpackInventoryManager;
+    }
+
+    public EconomyManager getEconomyManager() {
+        return economyManager;
+    }
+
+    public HelpGuiManager getHelpGuiManager() {
+        return helpGuiManager;
+    }
+
+    public BalanceTopGuiManager getBalanceTopGuiManager() {
+        return balanceTopGuiManager;
     }
 }

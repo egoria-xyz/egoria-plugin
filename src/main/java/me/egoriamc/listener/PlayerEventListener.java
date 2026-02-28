@@ -1,7 +1,9 @@
 package me.egoriamc.listener;
 
 import me.egoriamc.EgoriaMC;
+import me.egoriamc.manager.BalanceTopPageManager;
 import me.egoriamc.manager.MessageManager;
+import me.egoriamc.manager.PluginsPageManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -38,6 +40,10 @@ public class PlayerEventListener implements Listener {
 
         event.setQuitMessage(message);
         plugin.logInfo(message);
+
+        // Nettoyer les données de pagination
+        PluginsPageManager.cleanupPlayer(player.getUniqueId());
+        BalanceTopPageManager.cleanupPlayer(player.getUniqueId());
     }
 
     @EventHandler
