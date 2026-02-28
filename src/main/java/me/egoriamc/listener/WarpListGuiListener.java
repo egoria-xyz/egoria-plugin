@@ -31,14 +31,15 @@ public class WarpListGuiListener implements Listener {
         Player player = (Player) event.getWhoClicked();
         Inventory inventory = event.getClickedInventory();
 
-        if (inventory == null) {
+        if (inventory == null || inventory.getSize() != INVENTORY_SIZE) {
             return;
         }
 
-        // Vérifier si c'est la GUI des warps en regardant la taille et s'il y a des
-        // items de warp
-        if (inventory.getSize() != INVENTORY_SIZE) {
-            return;
+        // Vérifier si c'est bien la GUI des warps en regardant si les slots ont les
+        // bons items
+        ItemStack slot0 = inventory.getItem(0);
+        if (slot0 == null || slot0.getType() != Material.COMPASS) {
+            return; // Ce n'est pas la GUI des warps
         }
 
         event.setCancelled(true);

@@ -40,6 +40,7 @@ import me.egoriamc.manager.WarnManager;
 import me.egoriamc.manager.HomeManager;
 import me.egoriamc.manager.MessageManager;
 import me.egoriamc.manager.WarpManager;
+import me.egoriamc.manager.WarpListGuiManager;
 import me.egoriamc.util.EmojiUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -55,6 +56,7 @@ public class EgoriaMC extends JavaPlugin {
     private MessageManager messageManager;
     private HomeManager homeManager;
     private WarpManager warpManager;
+    private WarpListGuiManager warpListGuiManager;
     private AutoMessageManager autoMessageManager;
     private SpawnConfigManager spawnConfigManager;
     private DatabaseManager databaseManager;
@@ -75,6 +77,7 @@ public class EgoriaMC extends JavaPlugin {
             this.messageManager = new MessageManager(this);
             this.homeManager = new HomeManager(this);
             this.warpManager = new WarpManager(this);
+            this.warpListGuiManager = new WarpListGuiManager(this);
             this.autoMessageManager = new AutoMessageManager(this);
             this.spawnConfigManager = new SpawnConfigManager(this);
             this.databaseManager = new DatabaseManager(this);
@@ -263,6 +266,10 @@ public class EgoriaMC extends JavaPlugin {
 
     public WarpManager getWarpManager() {
         return warpManager;
+    }
+
+    public WarpListGuiManager getWarpListGuiManager() {
+        return warpListGuiManager;
     }
 
     public AutoMessageManager getAutoMessageManager() {

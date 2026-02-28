@@ -14,6 +14,7 @@ public class EconomyManager {
     private final JavaPlugin plugin;
     private Economy economy;
     private boolean enabled;
+    private static final double MAX_BALANCE = 50000000; // Limite de 50 million d'argent
 
     public EconomyManager(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -88,11 +89,20 @@ public class EconomyManager {
     }
 
     /**
-     * Ajoute de l'argent à un joueur
+     * Ajoute de l'argent à un joueur (avec limite de 1 000 000)
      */
     public boolean addBalance(Player player, double amount) {
         if (!isEnabled())
             return false;
+
+        double currentBalance = economy.getBalance(player);
+        double newBalance = currentBalance + amount;
+
+        // Vérifier si la limite est dépassée
+        if (newBalance > MAX_BALANCE) {
+            return false; // Dépasse la limite
+        }
+
         economy.depositPlayer(player, amount);
         return true;
     }
@@ -108,19 +118,21 @@ public class EconomyManager {
     }
 
     /**
-     * Définit le solde d'un joueur
+     * Définit le solde d'un joueur (avec limite de 1 000 000)
      */
     public void setBalance(Player player, double amount) {
         if (!isEnabled())
             return;
-        player.sendMessage(economy.format(amount));
+
+        // Ne pas dépasser la limite
+        double finalAmount = Math.min(amount, MAX_BALANCE);
 
         // Soustraire le solde actuel puis ajouter le nouveau
         double current = economy.getBalance(player);
-        if (current < amount) {
-            economy.depositPlayer(player, amount - current);
+        if (current < finalAmount) {
+            economy.depositPlayer(player, finalAmount - current);
         } else {
-            economy.withdrawPlayer(player, current - amount);
+            economy.withdrawPlayer(player, current - finalAmount);
         }
     }
 
@@ -129,5 +141,12 @@ public class EconomyManager {
      */
     public Economy getEconomy() {
         return economy;
+    }
+
+    /**
+     * Retourne la limite maximale d'argent
+     */
+    public double getMaxBalance() {
+        return MAX_BALANCE;
     }
 }

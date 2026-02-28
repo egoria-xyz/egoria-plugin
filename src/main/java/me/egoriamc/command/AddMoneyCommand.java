@@ -64,7 +64,18 @@ public class AddMoneyCommand implements CommandExecutor {
         }
 
         // Ajouter l'argent
-        economyManager.addBalance(target, amount);
+        if (!economyManager.addBalance(target, amount)) {
+            // La limite a été dépassée
+            double maxBalance = economyManager.getMaxBalance();
+            double currentBalance = economyManager.getBalance(target);
+            sender.sendMessage("§c✗ Le joueur " + target.getName() + " a atteint la limite maximale d'argent: §e"
+                    + economyManager.formatBalance(maxBalance));
+            sender.sendMessage("§c  Solde actuel: §e" + economyManager.formatBalance(currentBalance));
+            target.sendMessage(
+                    "§c✗ Vous avez atteint la limite maximale d'argent: §e" + economyManager.formatBalance(maxBalance));
+            return true;
+        }
+
         String formattedAmount = economyManager.formatBalance(amount);
 
         // Messages

@@ -9,8 +9,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Map;
-
 /**
  * Commande /warp
  */
@@ -111,18 +109,8 @@ public class WarpCommand implements CommandExecutor {
     }
 
     private void handleList(Player player) {
-        Map<String, Location> warps = warpManager.getAllWarps();
-
-        if (warps.isEmpty()) {
-            player.sendMessage(messageManager.getWarpListEmpty());
-            return;
-        }
-
-        player.sendMessage(messageManager.getWarpListHeader());
-        for (String warpName : warps.keySet()) {
-            String creator = warpManager.getWarpCreator(warpName);
-            player.sendMessage(messageManager.getWarpListItem(warpName, creator));
-        }
+        // Ouvrir la GUI de la liste des warps
+        plugin.getWarpListGuiManager().openWarpListGui(player, 1);
     }
 
     private void handleInfo(Player player, String[] args) {
