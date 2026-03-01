@@ -32,6 +32,19 @@ public class WarpListGuiListener implements Listener {
         if (inv == null || inv.getSize() != INVENTORY_SIZE)
             return false;
         ItemStack s0 = inv.getItem(0);
+        if (s0 == null || s0.getType() != Material.COMPASS) {
+            return false; // Ce n'est pas la GUI des warps
+        }
+        return true;
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (event.getWhoClicked() == null || !(event.getWhoClicked() instanceof Player)) {
+            return;
+        }
+
+        Player player = (Player) event.getWhoClicked();
         Inventory topInv = event.getView().getTopInventory();
 
         if (!isWarpListGui(topInv)) {
@@ -45,13 +58,6 @@ public class WarpListGuiListener implements Listener {
         if (!isWarpListGui(clickedInv)) {
             return;
         }
-        ry.getItem(0);
-        if (slot0 == null || slot0.getType() != Material.COMPASS) {
-            return; // Ce n'est pas la GUI des warps
-        }
-
-        // Bloquer tous les clics dans cette GUI
-        event.setCancelled(true);
 
         ItemStack clicked = event.getCurrentItem();
         if (clicked == null || clicked.getType() == Material.AIR) {

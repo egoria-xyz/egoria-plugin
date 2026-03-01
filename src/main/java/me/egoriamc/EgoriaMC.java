@@ -17,6 +17,7 @@ import me.egoriamc.command.PluginsCommand;
 import me.egoriamc.command.RemoveMoneyCommand;
 import me.egoriamc.command.RemoveMoneyCommandTabCompleter;
 import me.egoriamc.command.ReloadCommand;
+import me.egoriamc.command.RepairCommand;
 import me.egoriamc.command.Vote2SleepCommand;
 import me.egoriamc.command.WarnCommand;
 import me.egoriamc.command.WarnCommandTabCompleter;
@@ -32,6 +33,7 @@ import me.egoriamc.listener.HelpGuiListener;
 import me.egoriamc.listener.PlayerEventListener;
 import me.egoriamc.listener.MentionListener;
 import me.egoriamc.listener.PluginsInventoryListener;
+import me.egoriamc.listener.RepairInventoryListener;
 import me.egoriamc.listener.WorldLoadListener;
 import me.egoriamc.listener.WarpListGuiListener;
 import me.egoriamc.manager.AutoMessageManager;
@@ -46,6 +48,7 @@ import me.egoriamc.manager.SpawnConfigManager;
 import me.egoriamc.manager.WarnManager;
 import me.egoriamc.manager.HomeManager;
 import me.egoriamc.manager.MessageManager;
+import me.egoriamc.manager.RepairManager;
 import me.egoriamc.manager.WarpManager;
 import me.egoriamc.manager.WarpListGuiManager;
 import me.egoriamc.util.EmojiUtil;
@@ -73,6 +76,7 @@ public class EgoriaMC extends JavaPlugin {
     private EconomyManager economyManager;
     private HelpGuiManager helpGuiManager;
     private BalanceTopGuiManager balanceTopGuiManager;
+    private RepairManager repairManager;
 
     @Override
     public void onEnable() {
@@ -94,6 +98,7 @@ public class EgoriaMC extends JavaPlugin {
             this.economyManager = new EconomyManager(this);
             this.helpGuiManager = new HelpGuiManager(this);
             this.balanceTopGuiManager = new BalanceTopGuiManager(this);
+            this.repairManager = new RepairManager();
 
             // Charger les emojis depuis emojis.yml
             EmojiUtil.loadEmojis(this);
@@ -129,6 +134,7 @@ public class EgoriaMC extends JavaPlugin {
             getCommand("addmoney").setTabCompleter(new AddMoneyCommandTabCompleter());
             getCommand("removemoney").setExecutor(new RemoveMoneyCommand(this));
             getCommand("removemoney").setTabCompleter(new RemoveMoneyCommandTabCompleter());
+            getCommand("repair").setExecutor(new RepairCommand(this));
 
             // Enregistrer les événements
             getServer().getPluginManager().registerEvents(new PlayerEventListener(this), this);
@@ -141,6 +147,7 @@ public class EgoriaMC extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new CreatureSpawnListener(this), this);
             getServer().getPluginManager().registerEvents(new HelpGuiListener(helpGuiManager), this);
             getServer().getPluginManager().registerEvents(new BalanceTopGuiListener(), this);
+            getServer().getPluginManager().registerEvents(new RepairInventoryListener(this), this);
             getServer().getPluginManager().registerEvents(new WorldLoadListener(this), this);
             getServer().getPluginManager().registerEvents(new WarpListGuiListener(), this);
 
@@ -322,5 +329,9 @@ public class EgoriaMC extends JavaPlugin {
 
     public BalanceTopGuiManager getBalanceTopGuiManager() {
         return balanceTopGuiManager;
+    }
+
+    public RepairManager getRepairManager() {
+        return repairManager;
     }
 }

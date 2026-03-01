@@ -74,6 +74,10 @@ commands:
     usage: /baltop [page]
     permission: egoriamc.baltop
     aliases: [moneytop]
+  repair:
+    description: Répare les équipements avec XP ou Minerais
+    usage: /repair
+    permission: egoriamc.repair.gardien
 
 permissions:
   egoriamc.help:
@@ -136,3 +140,12 @@ permissions:
   egoriamc.baltop:
     description: Permet de voir le classement des joueurs par argent
     default: true
+  egoriamc.repair.gardien:
+    description: Permet de réparer les équipements (grade Gardien)
+    default: op
+  egoriamc.repair.streamer:
+    description: Permet de réparer les équipements (grade Streamer)
+    default: op
+  egoriamc.repair.staff:
+    description: Permet de réparer les équipements (grade Staff)
+    default: op
